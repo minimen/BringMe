@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BringMe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--jQuery-->
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+    <!--jQuery Mobile-->
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <!--jQuery UI-->
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <!--Internal files-->
+    <script src="js/script.js"></script>
+    <link rel="stylesheet" href="CSS/style.css" />
+    <!--Google Maps API-->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+</head>
+
+<body>
+    <!-- Homescreen -->
+    <div data-role="page" id="home">
+        <div role="main" class="ui-content"></div>
+        <div data-role="header">
+            <h1>BringMe</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
+            <div><a id="addNewButton" data-role="button" href="#addnew">Eintrag hinzufügen</a> </div>
+            <ul data-role="listview" data-filter="true" data-filter-placeholder="Einträge durchsuchen" data-inset="true" id="eintraegeList">
+            </ul>
+            <div id="map-canvas"></div>
+        </div>
+        <!-- /content -->
+        <div data-role="footer">
+            <h4>Page Footer</h4>
+        </div>
+        <!-- /footer -->
+    </div>
+    <!-- Neuer Eintrag -->
+    <div data-role="page" id="addnew">
+        <div data-role="header">
+            <h1>Eintrag hinzufügen</h1>
+        </div>
+        <div role="main" class="ui-content">
+            <form>
+                <fieldset>
+                    <input type="text" name="name" value="Name">
+                    <input type="text" name="preis" value="Preis">
+                    <input type="text" name="adresse" value="Adresse">
+                    <input type="text" name="geschaeft" value="Geschäft">
+
+                    <!--<p>Date:<input type="text" id="datepicker"></p>-->
+
+                    <div class="ui-field-contain">
+                        <input type="checkbox" data-role="flipswitch" name="flip-checkbox-3" id="flip-checkbox-3" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
+                    </div>
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#home" id="back">Zurück</a>
+                            </li>
+                            <li><a href="#home" id="save">Speichern</a>
+                            </li>
+                        </ul>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div data-role="footer">
+            <h4>Page Footer</h4>
+        </div>
+    </div>
+
+    <!--Detail Seite-->
+    <div data-role="page" id="eintragDetail">
+        <div data-role="header">
+            <h1>Detail Seite</h1>
+        </div>
+        <div role="main" class="ui-content">
+            <input type="text" name="name" value="Name">
+            <input type="text" name="preis" value="Preis">
+            <input type="text" name="adresse" value="Adresse">
+            <input type="text" name="geschaeft" value="Geschäft">
+
+
+            <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
+        </div>
+        <div data-role="footer">
+            <h4>Page Footer</h4>
+        </div>
+    </div>
+
+</body>
+
+</html>
