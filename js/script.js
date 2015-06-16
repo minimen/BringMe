@@ -5,6 +5,7 @@ var idObjArray = 0;
 var map;
 var google;
 $(document).ready(function () {
+alert("win!");
     google.maps.event.addDomListener(window, 'load', initialize);
     addGetIdEventListener();
 });
