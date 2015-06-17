@@ -54,13 +54,12 @@ function addDefaultData() {
 function addGetIdEventListener() {
     $('#eintraegeList li').click(function () {
         var selectedObjectsId = $(this).attr("id");
-        alert(selectedObjectsId);
         eintragObjArray.forEach(function (curObj) {
             if (curObj.id == selectedObjectsId) {
-                document.getElementById('labelName').value = curObj.name;
-                document.getElementById('labelPreis').value = curObj.preis;
-                document.getElementById('labelAdresse').value = curObj.adresse;
-                document.getElementById('labelGeschaeft').value = curObj.geschaeft;
+                document.getElementById('labelName').textContent = curObj.name;
+                document.getElementById('labelPreis').textContent = curObj.preis;
+                document.getElementById('labelAdresse').textContent = curObj.adresse;
+                document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
                 if (curObj.isDone == true) {
                     $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
                 } else {
@@ -72,7 +71,11 @@ function addGetIdEventListener() {
                     $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
                 }
 
-                //alert(curObj.name);
+                $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
+                    transition: 'flip',
+                    reverse: true,
+                    showLoadMsg: true
+                });
             }
         })
 
