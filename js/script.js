@@ -7,7 +7,6 @@ var google;
 $(document).ready(function () {
     google.maps.event.addDomListener(window, 'load', initialize);
     fillDetailPageWithData();
-
     $("#save").click(addNewEintrag);
 
 });
@@ -147,9 +146,9 @@ function getAdressFromCoords(inLng, inLat) {
 }
 
 function addNewEintrag() {
-    var inName = "";
-    var inPreis = "";
-    var inLat = "";
+    var inName = $("#name").val();
+    var inPreis = $("#preis").val();
+    var inLat = $("#name").val();
     var inLng = "";
     var inGeschaeft = "";
     var inDate = "";
