@@ -175,10 +175,10 @@ function getAdressFromCoords(inLng, inLat) {
 function addNewEintrag() {
     var inName = $("#name").val();
     var inPreis = $("#preis").val();
-    var inLat = $("#name").val();
+    var inLat = "";
     var inLng = "";
     var inGeschaeft = "";
-    var inDate = $("#");
+    var inDate = $("#date").val();
     var inIsWichtig = "";
     var inIsDone = "";
 
