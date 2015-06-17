@@ -7,6 +7,9 @@ var google;
 $(document).ready(function () {
     google.maps.event.addDomListener(window, 'load', initialize);
     fillDetailPageWithData();
+
+    $("#save").click(addNewEintrag);
+
 });
 
 function initialize() {
@@ -76,9 +79,6 @@ function fillDetailPageWithData() {
                     reverse: true,
                     showLoadMsg: true
                 });
-            } else {
-                alert("Unerwarteter Fehler aufgetreten! Bitte TBZ kontaktieren");
-                alert("Se produjo un error inesperado! Por favor, póngase en contacto con TBZ");
             }
         })
     });
@@ -146,27 +146,15 @@ function getAdressFromCoords(inLng, inLat) {
     });
 }
 
-/*
-    function getLocation() {
-    if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-    x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-    }
+function addNewEintrag() {
+    var inName = "";
+    var inPreis = "";
+    var inLat = "";
+    var inLng = "";
+    var inGeschaeft = "";
+    var inDate = "";
+    var inIsWichtig = "";
+    var inIsDone = "";
 
-
-    function datepicker() {
-        $("#datepicker").datepicker({
-            changeMonth: true, //this option for allowing user to select month
-            changeYear: true //this option for allowing user to select from year range
-        });
-    }
-
-    function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude +
-    "<br>Longitude: " + position.coords.longitude;
-    }
-
-
-    */
+    //fillEintragObjArray();
+}
