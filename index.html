@@ -2,11 +2,12 @@
 <html>
 
 <head>
-    <title>BringMe Hellow</title>
+    <title>BringMe</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--jQuery-->
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>-->
+
     <!--jQuery Mobile-->
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
@@ -18,6 +19,7 @@
     <link rel="stylesheet" href="CSS/style.css" />
     <!--Google Maps API-->
     <script src="https://maps.googleapis.com/maps/api/js"></script>
+
 </head>
 
 <body>
@@ -53,11 +55,9 @@
                     <input type="text" name="preis" placeholder="Preis">
                     <input type="text" name="adresse" placeholder="Adresse">
                     <input type="text" name="geschaeft" placeholder="Geschäft">
-
-                    <!--<p>Date:<input type="text" id="datepicker"></p>-->
-
+                    <input type="text" id="datepicker">
                     <div class="ui-field-contain">
-                        <input type="checkbox" data-role="flipswitch" name="flip-checkbox-3" id="flip-checkbox-3" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
+                        <input type="checkbox" data-role="flipswitch" id="flipSwitchNewEintrag" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
                     </div>
                     <div data-role="navbar">
                         <ul>
@@ -85,7 +85,14 @@
             <label id="labelPreis"></label>
             <label id="labelAdresse"></label>
             <label id="labelGeschaeft"></label>
+            <p>Erledigen bis am: </p>
+            <label id="labelDate"></label>
+            <p>Erledigt?</p>
             <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
+            <p>Wichtig?</p>
+            <div class="ui-field-contain">
+                <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
+            </div>
         </div>
         <div data-role="footer">
             <h4>Page Footer</h4>

@@ -6,7 +6,7 @@ var map;
 var google;
 $(document).ready(function () {
     google.maps.event.addDomListener(window, 'load', initialize);
-    addGetIdEventListener();
+    fillDetailPageWithData();
 });
 
 function initialize() {
@@ -48,10 +48,10 @@ function addDefaultData() {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
     });
     $("#eintraegeList").listview("refresh");
-    addGetIdEventListener();
+    fillDetailPageWithData();
 }
 
-function addGetIdEventListener() {
+function fillDetailPageWithData() {
     $('#eintraegeList li').click(function () {
         var selectedObjectsId = $(this).attr("id");
         eintragObjArray.forEach(function (curObj) {
@@ -76,24 +76,11 @@ function addGetIdEventListener() {
                     reverse: true,
                     showLoadMsg: true
                 });
+            } else {
+                alert("Unerwarteter Fehler aufgetreten! Bitte TBZ kontaktieren");
+                alert("Se produjo un error inesperado! Por favor, póngase en contacto con TBZ");
             }
         })
-
-
-        /*        if (typeof (Storage) != "undefined") {
-                    // Store
-                    localStorage.setItem("lastname", "Smith");
-                    // Retrieve
-                    document.getElementById("result").innerHTML = localStorage.getItem("lastname");
-                } else {
-                    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
-                }
-
-                $.mobile.changePage("#eintragDetail", {
-                    data: {
-                        "param1": "value1"
-                    }
-                });*/
     });
 }
 
