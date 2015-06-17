@@ -66,6 +66,7 @@ function initialize() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(mapCanvas, mapOptions);
+
 }
 
 function addDefaultData() {
@@ -207,7 +208,7 @@ function isDate(txtDate) {
         return false;
     }
     //Declare Regex 
-    var rxDatePattern = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+    var rxDatePattern = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\.]\d{4}$/;
     var dtArray = currVal.match(rxDatePattern); // is format OK?
     if (dtArray === null) {
         return false;
