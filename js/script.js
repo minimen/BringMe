@@ -35,11 +35,11 @@ function initialize() {
         navigator.geolocation.getCurrentPosition(function (position) {
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-            marker = new google.maps.Marker({
-                map: map,
-                position: pos,
-                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-            });
+            /*marker = new google.maps.Marker({
+    map: map,
+    position: pos,
+    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+});*/
 
             map.setCenter(pos);
         }, function () {
@@ -67,6 +67,26 @@ function initialize() {
     };
     map = new google.maps.Map(mapCanvas, mapOptions);
 
+
+    GeoMarker = new GeolocationMarker();
+    GeoMarker.setCircleOptions({
+        fillColor: '#808080'
+    });
+
+    google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function () {
+        map.setCenter(this.getPosition());
+        map.fitBounds(this.getBounds());
+    });
+
+    google.maps.event.addListener(GeoMarker, 'geolocation_error', function (e) {
+        alert('There was an error obtaining your position. Message: ' + e.message);
+    });
+
+    GeoMarker.setMap(map);
+
+
+
+    var GeoMarker = new GeolocationMarker(map);
 }
 
 function addDefaultData() {
@@ -199,7 +219,6 @@ function geolocate() {
     }
 }
 
-
 function isDate(txtDate) {
 
     var currVal = txtDate;
@@ -208,7 +227,8 @@ function isDate(txtDate) {
         return false;
     }
     //Declare Regex 
-    var rxDatePattern = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\.]\d{4}$/;
+    var rxDatePattern = "/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/";
+    //DD/MM/YYYY
     var dtArray = currVal.match(rxDatePattern); // is format OK?
     if (dtArray === null) {
         return false;
@@ -225,8 +245,9 @@ function isDate(txtDate) {
         return false;
     } else if (dtMonth == 2) {
         var isleap = (dtYear % 4 == 0 && (dtYear % 100 != 0 || dtYear % 400 == 0));
-        if (dtDay > 29 || (dtDay == 29 && !isleap))
+        if (dtDay > 29 || (dtDay == 29 && !isleap)) {
             return false;
+        }
     }
     return true;
 }
