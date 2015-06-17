@@ -5,6 +5,7 @@ var idObjArray = 0;
 var map;
 var google;
 $(document).ready(function () {
+
     google.maps.event.addDomListener(window, 'load', initialize);
     addGetIdEventListener();
 });
@@ -54,8 +55,23 @@ function addDefaultData() {
 function addGetIdEventListener() {
     $('#eintraegeList li').click(function () {
         var selectedObjectsId = $(this).attr("id");
+        alert(selectedObjectsId);
         eintragObjArray.forEach(function (curObj) {
             if (curObj.id == selectedObjectsId) {
+                document.getElementById('labelName').value = curObj.name;
+                document.getElementById('labelPreis').value = curObj.preis;
+                document.getElementById('labelAdresse').value = curObj.adresse;
+                document.getElementById('labelGeschaeft').value = curObj.geschaeft;
+                if (curObj.isDone == true) {
+                    $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
+                } else {
+                    $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
+                }
+                if (curObj.isWichtig == true) {
+                    $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
+                } else {
+                    $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
+                }
 
                 //alert(curObj.name);
             }
@@ -109,7 +125,7 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
         geschaeft: inGeschaeft,
         date: inDate,
         isWichtig: inIsWichtig,
-        done: inIsDone
+        isDone: inIsDone
     };
     idObjArray += 1;
     eintragObjArray.push(newEintrag);
