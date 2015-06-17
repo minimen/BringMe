@@ -1,11 +1,6 @@
-//var x = document.getElementById("demo");
-var marker;
 var eintragObjArray = [];
 var idObjArray = 0;
-var map;
-var google;
-var placeSearch, autocomplete;
-var latlng = new Object();
+var map, google, placeSearch, autocomplete, idToDelete;
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -15,32 +10,28 @@ var componentForm = {
     postal_code: 'short_name'
 };
 $(document).ready(function () {
+    addDefaultData();
+    fillListWithData();
     google.maps.event.addDomListener(window, 'load', initialize);
-    fillDetailPageWithData();
-    $("#save").click(addNewEintrag);
-    $(function () {
-        $('#save').bind('click', function () {
-            var txtVal = $('#txtDate').val();
-            if (isDate(txtVal)) {
-                alert('Valid Date');
-            } else {
-                alert('Invalid Date');
-            }
-        });
+    $("#save").click(getAddressFromCoords);
+    $('#save').bind('click', function () {
+        var txtVal = $('#txtDate').val();
+        if (isDate(txtVal)) {
+            alert('Valid Date');
+        } else {
+            alert('Invalid Date');
+        }
     });
 
+    $("#deleteItem").click(deleteItem);
+
+    /*$("#home").on("pageshow", )*/
 });
 
 function initialize() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-            /*marker = new google.maps.Marker({
-    map: map,
-    position: pos,
-    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-});*/
 
             map.setCenter(pos);
         }, function () {
@@ -51,7 +42,6 @@ function initialize() {
         handleNoGeolocation(false);
     }
 
-    addDefaultData();
     autocomplete = new google.maps.places.Autocomplete(
         /** @type {HTMLInputElement} */
         (document.getElementById('autocomplete')), {
@@ -94,41 +84,45 @@ function addDefaultData() {
     fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
     fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", false, false);
     fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
+}
+
+function fillListWithData() {
     eintragObjArray.forEach(function (currObj) {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
     });
     $("#eintraegeList").listview("refresh");
-    fillDetailPageWithData();
+    $("#eintraegeList li").click(fillDetailPage);
+
 }
 
-function fillDetailPageWithData() {
-    $('#eintraegeList li').click(function () {
-        var selectedObjectsId = $(this).attr("id");
-        eintragObjArray.forEach(function (curObj) {
-            if (curObj.id == selectedObjectsId) {
-                document.getElementById('labelName').textContent = curObj.name;
-                document.getElementById('labelPreis').textContent = curObj.preis;
-                document.getElementById('labelAdresse').textContent = curObj.adresse;
-                document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
-                if (curObj.isDone == true) {
-                    $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
-                } else {
-                    $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
-                }
-                if (curObj.isWichtig == true) {
-                    $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
-                } else {
-                    $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
-                }
-
-                $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
-                    transition: 'flip',
-                    reverse: true,
-                    showLoadMsg: true
-                });
+function fillDetailPage() {
+    var selectedObjectsId = $(this).attr("id");
+    eintragObjArray.forEach(function (curObj) {
+        if (curObj.id == selectedObjectsId) {
+            document.getElementById('labelName').textContent = curObj.name;
+            document.getElementById('labelPreis').textContent = curObj.preis;
+            document.getElementById('labelAdresse').textContent = curObj.adresse;
+            document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
+            idToDelete = curObj.id;
+            if (curObj.isDone == true) {
+                $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
+            } else {
+                $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
             }
-        })
-    });
+            if (curObj.isWichtig == true) {
+                $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
+            } else {
+                $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
+            }
+
+            $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
+                transition: 'flip',
+                reverse: true,
+                showLoadMsg: true
+            });
+        }
+    })
+
 }
 
 function handleNoGeolocation(errorFlag) {
@@ -149,15 +143,15 @@ function handleNoGeolocation(errorFlag) {
 }
 
 function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
-    getAdressFromCoords(inLng, inLat);
-    var adress = "Limmatplatz";
+    var adr = getAdressFromCoords(inLng, inLat);
+    alert(adr);
     var newEintrag = {
         id: idObjArray,
         name: inName,
         preis: inPreis,
         lng: inLng,
         lat: inLat,
-        adresse: adress,
+        adresse: "Limmatplatz",
         geschaeft: inGeschaeft,
         date: inDate,
         isWichtig: inIsWichtig,
@@ -182,7 +176,6 @@ function getAdressFromCoords(inLng, inLat) {
                     position: latlng,
                     map: map
                 });
-                //alert(results[1].formatted_address);
                 return results[1].formatted_address;
             } else {
                 alert('No results found');
@@ -191,22 +184,6 @@ function getAdressFromCoords(inLng, inLat) {
             alert('Geocoder failed due to: ' + status);
         }
     });
-}
-
-function addNewEintrag() {
-    var coords = codeAddress($("#autocomplete").val());
-    alert(coords.lat);
-    alert(coords.lng);
-    var inName = $("#name").val();
-    var inPreis = $("#preis").val();
-    var inLat = latlng.lat;
-    var inLng = latlng.lng;
-    var inGeschaeft = $("#geschaeft").val();
-    var inDate = $("#date").val();
-    var inIsWichtig = $("#flipSwitchDetail").val();
-    var inIsDone = false;
-
-    //fillEintragObjArray();
 }
 
 function geolocate() {
@@ -256,24 +233,41 @@ function isDate(txtDate) {
     return true;
 }
 
-function codeAddress(address) {
+function getAddressFromCoords() {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
-        'address': address
+        'address': $("#autocomplete").val()
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
 
-            var latlng1 = {
-                lat: results[0].geometry.location.lat(),
-                lng: results[0].geometry.location.lng()
-            };
-            return latlng1;
+            var inName = $("#name").val();
+            var inPreis = $("#preis").val();
+            var inLat = results[0].geometry.location.lat();
+            var inLng = results[0].geometry.location.lng();
+            var inGeschaeft = $("#geschaeft").val();
+            var inDate = $("#date").val();
+            var inIsWichtig = $("#flipSwitchDetail").val();
+            var inIsDone = false;
+            fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
+
+            $("#eintraegeList").empty();
+            fillListWithData();
+
+            $(':mobile-pagecontainer').pagecontainer('change', '#home', {
+                transition: 'flip',
+                reverse: true,
+                showLoadMsg: true
+            });
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
     });
 }
 
-function getLng(inputLng) {
-    return inputLng;
+function deleteItem() {
+    eintragObjArray.forEach(function (curObj) {
+        if (curObj.id == idToDelete) {
+            eintragObjArray.remove(idToDelete);
+        }
+    });
 }
