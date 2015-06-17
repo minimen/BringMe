@@ -5,6 +5,7 @@ var idObjArray = 0;
 var map;
 var google;
 var placeSearch, autocomplete;
+var latlng = new Object();
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -193,14 +194,17 @@ function getAdressFromCoords(inLng, inLat) {
 }
 
 function addNewEintrag() {
+    var coords = codeAddress($("#autocomplete").val());
+    alert(coords.lat);
+    alert(coords.lng);
     var inName = $("#name").val();
     var inPreis = $("#preis").val();
-    var inLat = "";
-    var inLng = "";
-    var inGeschaeft = "";
+    var inLat = latlng.lat;
+    var inLng = latlng.lng;
+    var inGeschaeft = $("#geschaeft").val();
     var inDate = $("#date").val();
-    var inIsWichtig = "";
-    var inIsDone = "";
+    var inIsWichtig = $("#flipSwitchDetail").val();
+    var inIsDone = false;
 
     //fillEintragObjArray();
 }
@@ -250,4 +254,26 @@ function isDate(txtDate) {
         }
     }
     return true;
+}
+
+function codeAddress(address) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'address': address
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+
+            var latlng1 = {
+                lat: results[0].geometry.location.lat(),
+                lng: results[0].geometry.location.lng()
+            };
+            return latlng1;
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+function getLng(inputLng) {
+    return inputLng;
 }
