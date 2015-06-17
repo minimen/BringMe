@@ -57,6 +57,7 @@
     <!-- Neuer Eintrag -->
     <div data-role="page" id="addnew">
         <div data-role="header">
+            <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back ui-btn-icon-notext" style="background-color: #912240;"></a>
             <h1>Eintrag hinzufügen</h1>
         </div>
         <div role="main" class="ui-content">
@@ -72,8 +73,6 @@
                     </div>
                     <div data-role="navbar">
                         <ul>
-                            <li><a href="#home" id="back">Zurück</a>
-                            </li>
                             <li><a href="#home" id="save">Speichern</a>
                             </li>
                         </ul>
@@ -89,21 +88,38 @@
     <!--Detail Seite-->
     <div data-role="page" id="eintragDetail">
         <div data-role="header">
-            <a href="#home" class="ui-btn-left ui-btn-back ui-btn-corner-all ui-btn-hover-a ui-btn ui-icon-arrow-l ui-btn-icon-left ui-shadow ui-corner-all" data-role="button" role="button">Home</a>
-            <h1>Detail Seite</h1>
+            <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn ui-icon-home ui-btn-icon-notext" style="background-color: #912240;"></a>
+            <h1>Details</h1>
         </div>
         <div role="main" class="ui-content">
-            <label id="labelName"></label>
+            <table>
+            <tr>
+            <th><label for="pProdukt">Produkt:</label></th>
+            <td><p id="pProdukt"></p>
+            <label id="labelName"></label ></td>
+            </tr>
+                
+            <label for="pPreis">Preis:</label>
+            <p id="pPreis"></p>
             <label id="labelPreis"></label>
+           
+            <label for="pAdresse">Adresse:</label>
+            <p id="pAdresse"></p>     
             <label id="labelAdresse"></label>
+            
+            <label for="pGeschaeft">Geschäft:</label>
+            <p id="pGeschaeft"></p>     
             <label id="labelGeschaeft"></label>
-            <p>Erledigen bis am: </p>
+            
+            <label for="pDate">Erledigen bis am:</label>
             <label id="labelDate"></label>
-            <p>Erledigt?</p>
-            <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
-            <p>Wichtig? </p>
+            </table>
+            <label>Erledigt?<input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" /></label>
             <div class="ui-field-contain">
-                <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
+                <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch"></label>
+            </div>
+            <div>
+                <a href="#" class="ui-btn" id="delete-btn">Eintrag löschen</a>
             </div>
         </div>
         <div data-role="footer">
