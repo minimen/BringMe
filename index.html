@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="CSS/BringMeStyle.css" />
     <link rel="stylesheet" href="CSS/jquery.mobile.icons.min.css" />
     <!--Google Maps API-->
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 
 </head>
 
@@ -55,7 +55,7 @@
                 <fieldset>
                     <input type="text" id="name" placeholder="Name">
                     <input type="text" id="preis" placeholder="Preis">
-                    <input type="text" id="adresse" placeholder="Adresse">
+                    <input id="autocomplete" placeholder="Adresse" onFocus="geolocate()" type="text">
                     <input type="text" id="geschaeft" placeholder="Geschäft">
                     <input type="text" id="datepicker">
                     <div class="ui-field-contain">
