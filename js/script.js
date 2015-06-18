@@ -8,6 +8,7 @@ var idObjArray = 0;
 var idMarkerArray = 0;
 var loadedOnce = false;
 var map, detailMap, google, placeSearch, autocomplete, idToDelete, markerIdToDelete, currentLocation;
+var directionsDisplay;
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -33,10 +34,15 @@ $(document).ready(function () {
 
     $("#deleteItem").click(deleteItem);
 
+    /*
+        $(document).on("pageshow", "#eintragDetail", function () {
+            currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        });*/
 
     $(document).on("pageshow", "#eintragDetail", function () {
         google.maps.event.trigger(detailMap, 'resize');
     });
+
 
     $(document).on("pageshow", "#home", function () {
         google.maps.event.trigger(map, 'resize');
@@ -65,7 +71,7 @@ function initialize() {
             types: ['geocode']
         });
 
-
+    directionsDisplay = new google.maps.DirectionsRenderer();
 
     var mapCanvas = document.getElementById('map-canvas');
     var mapOptions = {
@@ -346,10 +352,6 @@ function drawDetailMap(inLat, inLng) {
     var canvas = document.getElementById('detailMap');
     var mapOptions = {
         zoom: 16,
-        center: {
-            lng: lng,
-            lat: lat
-        },
         mapTypeId: google.maps.MapTypeId.ROADMAP
             //,center: latlng
     };
@@ -360,7 +362,23 @@ function drawDetailMap(inLat, inLng) {
     /*    alert(latlng);*/
 
     detailMap = new google.maps.Map(canvas, mapOptions);
+
+    var start = currentLocation;
+    var end = new google.maps.LatLng(lat, lng);
+    var request = {
+        origin: start,
+        destination: end,
+        travelMode: google.maps.TravelMode.WALKING
+    };
+    var directionsService = new google.maps.DirectionsService();
+    directionsService.route(request, function (response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        }
+    });
+    directionsDisplay.setMap(detailMap);
     detailMap.setCenter(latlng);
+    detailMap.setZoom(16);
     //resizeDetailMap();
 }
 
@@ -373,4 +391,4 @@ function deleteMarker(id) {
             return;
         }
     }
-};
+}
