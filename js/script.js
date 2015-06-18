@@ -9,6 +9,7 @@ var componentForm = {
     country: 'long_name',
     postal_code: 'short_name'
 };
+
 $(document).ready(function () {
     addDefaultData();
     fillListWithData();
@@ -24,6 +25,7 @@ $(document).ready(function () {
     });
 
     $("#deleteItem").click(deleteItem);
+    addMarkerToMap();
 
     /*$("#home").on("pageshow", )*/
 });
@@ -52,7 +54,6 @@ function initialize() {
 
     var mapCanvas = document.getElementById('map-canvas');
     var mapOptions = {
-        center: new google.maps.LatLng(47.38347, 8.535286),
         zoom: 16,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -66,7 +67,7 @@ function initialize() {
 
     google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function () {
         map.setCenter(this.getPosition());
-        map.fitBounds(this.getBounds());
+        //map.fitBounds(this.getBounds());   
     });
 
     google.maps.event.addListener(GeoMarker, 'geolocation_error', function (e) {
@@ -87,6 +88,7 @@ function addDefaultData() {
 }
 
 function fillListWithData() {
+    $("#eintraegeList").empty();
     eintragObjArray.forEach(function (currObj) {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
     });
@@ -97,13 +99,16 @@ function fillListWithData() {
 
 function fillDetailPage() {
     var selectedObjectsId = $(this).attr("id");
+    var index = -1;
     eintragObjArray.forEach(function (curObj) {
+        index++;
         if (curObj.id == selectedObjectsId) {
+            idToDelete = index;
+            alert(idToDelete + " = " + curObj.id);
             document.getElementById('labelName').textContent = curObj.name;
             document.getElementById('labelPreis').textContent = curObj.preis;
             document.getElementById('labelAdresse').textContent = curObj.adresse;
             document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
-            idToDelete = curObj.id;
             if (curObj.isDone == true) {
                 $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
             } else {
@@ -144,7 +149,6 @@ function handleNoGeolocation(errorFlag) {
 
 function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
     var adr = getAdressFromCoords(inLng, inLat);
-    alert(adr);
     var newEintrag = {
         id: idObjArray,
         name: inName,
@@ -159,6 +163,7 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
     };
     idObjArray += 1;
     eintragObjArray.push(newEintrag);
+    addMarkerToMap();
 }
 
 function getAdressFromCoords(inLng, inLat) {
@@ -171,11 +176,7 @@ function getAdressFromCoords(inLng, inLat) {
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                map.setZoom(11);
-                marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map
-                });
+                addMarkerToMap();
                 return results[1].formatted_address;
             } else {
                 alert('No results found');
@@ -184,6 +185,20 @@ function getAdressFromCoords(inLng, inLat) {
             alert('Geocoder failed due to: ' + status);
         }
     });
+}
+
+function addMarkerToMap() {
+    eintragObjArray.forEach(function (curObj) {
+        var lat = parseFloat(curObj.lat);
+        var lng = parseFloat(curObj.lng);
+        var latlng = new google.maps.LatLng(lat, lng);
+        marker = new google.maps.Marker({
+            position: latlng,
+            map: map
+        });
+
+    })
+
 }
 
 function geolocate() {
@@ -250,7 +265,6 @@ function getAddressFromCoords() {
             var inIsDone = false;
             fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
 
-            $("#eintraegeList").empty();
             fillListWithData();
 
             $(':mobile-pagecontainer').pagecontainer('change', '#home', {
@@ -265,9 +279,7 @@ function getAddressFromCoords() {
 }
 
 function deleteItem() {
-    eintragObjArray.forEach(function (curObj) {
-        if (curObj.id == idToDelete) {
-            eintragObjArray.remove(idToDelete);
-        }
-    });
+    eintragObjArray.splice(idToDelete, 1);
+    fillListWithData();
+    addMarkerToMap();
 }
