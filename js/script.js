@@ -1,6 +1,6 @@
 var eintragObjArray = [];
 var idObjArray = 0;
-var map, google, placeSearch, autocomplete, idToDelete;
+var map, detailMap, google, placeSearch, autocomplete, idToDelete;
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -26,6 +26,11 @@ $(document).ready(function () {
     });
 
     $("#deleteItem").click(deleteItem);
+
+
+    $(document).on("pageshow", "#eintragDetail", function () {
+        google.maps.event.trigger(detailMap, 'resize');
+    });
 
     /*$("#home").on("pageshow", )*/
 });
@@ -76,8 +81,6 @@ function initialize() {
 
     GeoMarker.setMap(map);
 
-
-
     var GeoMarker = new GeolocationMarker(map);
 }
 
@@ -108,6 +111,7 @@ function fillDetailPage() {
             document.getElementById('labelPreis').textContent = curObj.preis;
             document.getElementById('labelAdresse').textContent = curObj.adresse;
             document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
+            document.getElementById('labelDate').textContent = curObj.date;
             if (curObj.isDone == true) {
                 $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
             } else {
@@ -119,16 +123,18 @@ function fillDetailPage() {
                 $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
             }
 
-
-            var mapCanvas = document.getElementById('detailMap');
+            /*      var mapCanvas2 = document.getElementById('detailMap');
             var mapOptions = {
                 zoom: 16,
+                center: {
+                    34.397,
+                    150.644
+                },
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            var detMap = new google.maps.Map(mapCanvas, mapOptions);
+            var detMap = new google.maps.Map(mapCanvas2, mapOptions);*/
 
-
-
+            drawDetailMap(curObj.lat, curObj.lng);
 
             $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
                 transition: 'flip',
@@ -290,4 +296,25 @@ function deleteItem() {
     eintragObjArray.splice(idToDelete, 1);
     addMarkerToMap();
     fillListWithData();
+}
+
+function drawDetailMap(inLat, inLng) {
+    var lat = parseFloat(inLat);
+    var lng = parseFloat(inLng);
+    var latlng = new google.maps.LatLng(lat, lng);
+    var canvas = document.getElementById('detailMap');
+    var mapOptions = {
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: latlng
+    };
+    var detMarker = new google.maps.Marker({
+        position: latlng,
+        map: detailMap
+    });
+    alert(latlng);
+
+
+    detailMap = new google.maps.Map(canvas, mapOptions);
+    //resizeDetailMap();
 }
