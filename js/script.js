@@ -160,7 +160,6 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
         preis: inPreis,
         lng: inLng,
         lat: inLat,
-        adresse: "Limmatplatz",
         geschaeft: inGeschaeft,
         date: inDate,
         isWichtig: inIsWichtig,
@@ -317,7 +316,9 @@ function addNewItemToList() {
                     reverse: true,
                     showLoadMsg: true
                 });
-                /*                if (!$.isNumeric(inPreis)) {
+                
+                
+                /*            if (!$.isNumeric(inPreis)) {
                                     isValid = false;
                                 }
                                 alert(isValid);
