@@ -266,6 +266,15 @@ function getAddressFromCoords() {
 
             fillListWithData();
 
+            var detailMap = document.getElementById('map-canvas');
+            var mapOptions = {
+                zoom: 16,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(mapCanvas, mapOptions);
+
+
+
             $(':mobile-pagecontainer').pagecontainer('change', '#home', {
                 transition: 'flip',
                 reverse: true,
