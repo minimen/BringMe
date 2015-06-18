@@ -1,5 +1,6 @@
 var eintragObjArray = [];
 var idObjArray = 0;
+var loadedOnce = false;
 var map, detailMap, google, placeSearch, autocomplete, idToDelete, currentLocation;
 var componentForm = {
     street_number: 'short_name',
@@ -13,7 +14,6 @@ var componentForm = {
 $(document).ready(function () {
     addDefaultData();
     fillListWithData();
-    addMarkerToMap();
     google.maps.event.addDomListener(window, 'load', initialize);
     $("#save").click(addNewItemToList);
     /*$('#save').bind('click', function () {
@@ -64,6 +64,7 @@ function initialize() {
     };
     map = new google.maps.Map(mapCanvas, mapOptions);
 
+    addMarkerToMap();
 
     GeoMarker = new GeolocationMarker();
     GeoMarker.setCircleOptions({
@@ -180,7 +181,7 @@ function getAdressFromCoords(inLng, inLat) {
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                alert(results[1].formatted_address);
+                //alert(results[1].formatted_address);
                 //addMarkerToMap();
                 return results[1].formatted_address;
             } else {
@@ -192,7 +193,47 @@ function getAdressFromCoords(inLng, inLat) {
     });
 }
 
+/*
+function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+    var lat = parseFloat(inLat);
+    var lng = parseFloat(inLng);
+    var latlng = new google.maps.LatLng(lat, lng);
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'latLng': latlng
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+                var newEintrag = {
+                    id: idObjArray,
+                    name: inName,
+                    preis: inPreis,
+                    lng: inLng,
+                    lat: inLat,
+                    adresse: results[1].formatted_address,
+                    geschaeft: inGeschaeft,
+                    date: inDate,
+                    isWichtig: inIsWichtig,
+                    isDone: inIsDone
+                };
+                idObjArray += 1;
+                eintragObjArray.push(newEintrag);
+                addMarkerToMap();
+            } else {
+                alert('No results found');
+            }
+        } else {
+            alert('Geocoder failed due to: ' + status);
+        }
+    });
+}*/
+
 function addMarkerToMap() {
+    if (!loadedOnce) {
+        alert("add");
+        //map.clearOverlays();
+        loadedOnce = true;
+    }
     eintragObjArray.forEach(function (curObj) {
         var lat = parseFloat(curObj.lat);
         var lng = parseFloat(curObj.lng);
@@ -258,36 +299,57 @@ function addNewItemToList() {
     geocoder.geocode({
         'address': $("#autocomplete").val()
     }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var isValid = true;
-            var inName = $("#name").val();
-            var inPreis = $("#preis").val();
-            var inLat = results[0].geometry.location.lat();
-            var inLng = results[0].geometry.location.lng();
-            var inGeschaeft = $("#geschaeft").val();
-            var inDate = $("#date").val();
-            var inIsWichtig = $("#flipSwitchDetail").val();
-            var inIsDone = false;
+        if ($("#autocomplete").val() != '') {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var isValid = true;
+                var inName = $("#name").val();
+                var inPreis = $("#preis").val();
+                var inLat = results[0].geometry.location.lat();
+                var inLng = results[0].geometry.location.lng();
+                var inGeschaeft = $("#geschaeft").val();
+                var inDate = $("#date").val();
+                var inIsWichtig = $("#flipSwitchDetail").val();
+                var inIsDone = false;
+                fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
+                fillListWithData();
+                $(':mobile-pagecontainer').pagecontainer('change', '#home', {
+                    transition: 'flip',
+                    reverse: true,
+                    showLoadMsg: true
+                });
+                /*                if (!$.isNumeric(inPreis)) {
+                                    isValid = false;
+                                }
+                                alert(isValid);
+                                isValid = validateTxt(inName)
+                                alert(isValid);
+                                isValid = validateTxt(inGeschaeft);
+                                alert(isValid);
+                                isValid = validateTxt(inDate);
+                                alert(isValid);*/
 
-            //validateData();
 
-            fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
-            fillListWithData();
-            $(':mobile-pagecontainer').pagecontainer('change', '#home', {
-                transition: 'flip',
-                reverse: true,
-                showLoadMsg: true
-            });
+                //validateData();
 
-            /*            if (isValid) {
+                /*                if (isValid) {
+                                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
+                                    fillListWithData();
+                                    $(':mobile-pagecontainer').pagecontainer('change', '#home', {
+                                        transition: 'flip',
+                                        reverse: true,
+                                        showLoadMsg: true
+                                    });
+                                }*/
+                /*            if (isValid) {
 
-                        } else {
+                            } else {
 
-                            alert("Bitte eingabe überprüfen!");
+                                alert("Bitte eingabe überprüfen!");
 
-                        }*/
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+                            }*/
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
         }
     });
 }
@@ -316,14 +378,21 @@ function drawDetailMap(inLat, inLng) {
             position: latlng,
             map: detailMap
         });*/
-    alert(latlng);
+    /*    alert(latlng);*/
 
     detailMap = new google.maps.Map(canvas, mapOptions);
     detailMap.setCenter(latlng);
     //resizeDetailMap();
 }
 
+function validateTxt(txt) {
+    if (txt == '') {
+        return false;
+    }
+}
+
 /*function validateData() {
+    alert("val");
     $('#formNewItem').validate({ // initialize the plugin
         rules: {
             name: {
@@ -332,25 +401,23 @@ function drawDetailMap(inLat, inLng) {
             },
             preis: {
                 required: true,
-                minlength: 1,
-                n
+                minlength: 1
             },
             address: {
                 required: true,
-                minlength: 5
+                minlength: 1
             },
             geschaeft: {
                 required: true,
-                minlength: 5
+                minlength: 1
             },
             date: {
                 required: true,
-                minlength: 5
+                minlength: 1
             }
         },
-        submitHandler: function (form) { // for demo
-            alert('valid form submitted'); // for demo
-            return false; // for demo
+        submitHandler: function (form) {
+
         }
     });
 }*/
