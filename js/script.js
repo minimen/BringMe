@@ -1,11 +1,13 @@
 var eintragObjArray = [];
+var markerArray = [];
 var jaNeinObj = {
     ja: "Ja",
     nein: "Nein"
 };
 var idObjArray = 0;
+var idMarkerArray = 0;
 var loadedOnce = false;
-var map, detailMap, google, placeSearch, autocomplete, idToDelete, currentLocation;
+var map, detailMap, google, placeSearch, autocomplete, idToDelete, markerIdToDelete, currentLocation;
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -28,7 +30,6 @@ $(document).ready(function () {
         alert('Invalid Date');
     }
 });*/
-
 
     $("#deleteItem").click(deleteItem);
 
@@ -104,6 +105,7 @@ function fillListWithData() {
     $("#eintraegeList").empty();
     eintragObjArray.forEach(function (currObj) {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
+        localStorage.setItem(currObj.id, currObj.name);
     });
     $("#eintraegeList").listview("refresh");
     $("#eintraegeList li").click(fillDetailPage);
@@ -117,6 +119,7 @@ function fillDetailPage() {
         index++;
         if (curObj.id == selectedObjectsId) {
             idToDelete = index;
+            markerIdToDelete = index;
             document.getElementById('labelName').textContent = curObj.name;
             document.getElementById('labelPreis').textContent = curObj.preis;
             document.getElementById('labelAdresse').textContent = curObj.adresse;
@@ -210,6 +213,8 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
     idObjArray += 1;
     eintragObjArray.push(newEintrag);
     addMarkerToMap();
+    localStorage.setItem(newEintrag.id, newEintrag.name);
+
 }
 
 function getAdressFromCoords(inLng, inLat) {
@@ -249,7 +254,13 @@ function addMarkerToMap() {
             position: latlng,
             map: map
         });
+        idMarkerArray++;
 
+        var markerObj = {
+            marker: marker,
+            id: idMarkerArray
+        };
+        markerArray.push(markerObj);
     })
 
 }
@@ -321,8 +332,11 @@ function addNewItemToList() {
 
 function deleteItem() {
     eintragObjArray.splice(idToDelete, 1);
+    alert(markerArray[markerIdToDelete].id);
     addMarkerToMap();
     fillListWithData();
+    deleteMarker(markerIdToDelete);
+
 }
 
 function drawDetailMap(inLat, inLng) {
@@ -349,3 +363,14 @@ function drawDetailMap(inLat, inLng) {
     detailMap.setCenter(latlng);
     //resizeDetailMap();
 }
+
+//Find and remove the marker from the Array
+function deleteMarker(id) {
+    for (var i = 0; i < markerArray.length; i++) {
+        if (markerArray[i].id == id) {
+            markerArray[i].setMap(null);
+            markerArray.splice(i, 1);
+            return;
+        }
+    }
+};

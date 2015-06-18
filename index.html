@@ -4,6 +4,7 @@
 <head>
     <title>BringMe</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
     <!--jQuery-->
     <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -42,7 +43,7 @@
 <body>
     <!-- Homescreen -->
     <div data-role="page" id="home">
-        <div data-role="header">
+        <div data-role="header" data-position="fixed">
             <h1>BringMe</h1>
         </div>
         <!-- /header -->
@@ -61,7 +62,7 @@
 
     <!-- Neuer Eintrag -->
     <div data-role="page" id="addnew">
-        <div data-role="header">
+        <div data-role="header" data-position="fixed">
             <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back ui-btn-icon-notext" style="background-color: #912240;"></a>
             <h1>Eintrag hinzufügen</h1>
         </div>
@@ -93,7 +94,7 @@
 
     <!--Detail Seite-->
     <div data-role="page" id="eintragDetail">
-        <div data-role="header">
+        <div data-role="header" data-position="fixed">
             <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn ui-icon-back ui-btn-icon-notext" style="background-color: #912240;"></a>
             <h1>Detail Seite</h1>
         </div>
@@ -164,13 +165,14 @@
 
             <div data-role="navbar" id="navbar">
                 <ul>
-                    <li><a href="#" id="isDone" data-role="button">Erledigt?</a>
+                    <li><a href="#" id="isDone" data-role="ui-btn">Erledigt?</a>
                     </li>
                     <li><a href="#home" class="ui-btn" id="deleteItem">Eintrag löschen</a>
                     </li>
                 </ul>
             </div>
             <!-- /navbar -->
+            <br />
 
             <div id="detailMap"></div>
 
