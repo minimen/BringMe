@@ -73,7 +73,7 @@
                     </div>
                     <div data-role="navbar">
                         <ul>
-                            <li><a href="#home" id="save">Speichern</a>
+                            <li><a id="save">Speichern</a>
                             </li>
                         </ul>
                     </div>
@@ -93,34 +93,43 @@
         </div>
         <div role="main" class="ui-content">
             <table>
-            <tr>
-            <th><label for="pProdukt">Produkt:</label></th>
-            <td><p id="pProdukt"></p>
-            <label id="labelName"></label ></td>
-            </tr>
-                
-            <label for="pPreis">Preis:</label>
-            <p id="pPreis"></p>
-            <label id="labelPreis"></label>
-           
-            <label for="pAdresse">Adresse:</label>
-            <p id="pAdresse"></p>     
-            <label id="labelAdresse"></label>
-            
-            <label for="pGeschaeft">Geschäft:</label>
-            <p id="pGeschaeft"></p>     
-            <label id="labelGeschaeft"></label>
-            
-            <label for="pDate">Erledigen bis am:</label>
-            <label id="labelDate"></label>
+                <tr>
+                    <th>
+                        <label for="pProdukt">Produkt:</label>
+                    </th>
+                    <td>
+                        <p id="pProdukt"></p>
+                        <label id="labelName"></label>
+                    </td>
+                </tr>
+
+                <label for="pPreis">Preis:</label>
+                <p id="pPreis"></p>
+                <label id="labelPreis"></label>
+
+                <label for="pAdresse">Adresse:</label>
+                <p id="pAdresse"></p>
+                <label id="labelAdresse"></label>
+
+                <label for="pGeschaeft">Geschäft:</label>
+                <p id="pGeschaeft"></p>
+                <label id="labelGeschaeft"></label>
+
+                <label for="pDate">Erledigen bis am:</label>
+                <label id="labelDate"></label>
             </table>
-            <label>Erledigt?<input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" /></label>
+            <label>Erledigt?
+                <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
+            </label>
             <div class="ui-field-contain">
-                <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch"></label>
+                <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
             </div>
             <div>
-                <a href="#" class="ui-btn" id="delete-btn">Eintrag löschen</a>
+                <a href="#home" class="ui-btn" id="deleteItem">Eintrag löschen</a>
             </div>
+
+            <div id="detailMap"></div>
+
         </div>
         <div data-role="footer">
             <h4>Page Footer</h4>

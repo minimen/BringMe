@@ -13,6 +13,7 @@ var componentForm = {
 $(document).ready(function () {
     addDefaultData();
     fillListWithData();
+    addMarkerToMap();
     google.maps.event.addDomListener(window, 'load', initialize);
     $("#save").click(getAddressFromCoords);
     $('#save').bind('click', function () {
@@ -25,7 +26,6 @@ $(document).ready(function () {
     });
 
     $("#deleteItem").click(deleteItem);
-    addMarkerToMap();
 
     /*$("#home").on("pageshow", )*/
 });
@@ -104,7 +104,6 @@ function fillDetailPage() {
         index++;
         if (curObj.id == selectedObjectsId) {
             idToDelete = index;
-            alert(idToDelete + " = " + curObj.id);
             document.getElementById('labelName').textContent = curObj.name;
             document.getElementById('labelPreis').textContent = curObj.preis;
             document.getElementById('labelAdresse').textContent = curObj.adresse;
@@ -280,6 +279,6 @@ function getAddressFromCoords() {
 
 function deleteItem() {
     eintragObjArray.splice(idToDelete, 1);
-    fillListWithData();
     addMarkerToMap();
+    fillListWithData();
 }
