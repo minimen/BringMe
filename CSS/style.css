@@ -5,8 +5,12 @@ body {
     margin: 0px;
 }
 
+.error {
+    border: solid 2px #FF0000;
+}
+
 td {
-    padding: 10px;
+    padding-left: 10px;
 }
 
 #map-canvas {

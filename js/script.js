@@ -86,8 +86,8 @@ function initialize() {
 }
 
 function addDefaultData() {
-    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
-    fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", false, false);
+    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", true, false);
+    fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
     fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
 }
 
@@ -113,16 +113,22 @@ function fillDetailPage() {
             document.getElementById('labelAdresse').textContent = curObj.adresse;
             document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
             document.getElementById('labelDate').textContent = curObj.date;
+
+            //alert("isDone: " + curObj.isDone);
             if (curObj.isDone == true) {
                 $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
             } else {
                 $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
             }
-            if (curObj.isWichtig == true) {
-                $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
+
+            //alert("isWichtig: " + curObj.isWichtig);
+            var fts = $('#flipSwitchDetail');
+            if (curObj.isWichtig == false) {
+                fts.val('off');
             } else {
-                $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
+                fts.val('on');
             }
+            //fts.flipswitch('refresh');
 
             drawDetailMap(curObj.lat, curObj.lng);
 
@@ -160,6 +166,7 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
         preis: inPreis,
         lng: inLng,
         lat: inLat,
+        adresse: "Limmatplatz",
         geschaeft: inGeschaeft,
         date: inDate,
         isWichtig: inIsWichtig,
@@ -229,8 +236,9 @@ function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
 
 function addMarkerToMap() {
     if (!loadedOnce) {
-        alert("add");
-        //map.clearOverlays();
+        //alert("add");
+        setTimeout(null, 1500)
+            //map.clearOverlays();
         loadedOnce = true;
     }
     eintragObjArray.forEach(function (curObj) {
@@ -260,39 +268,6 @@ function geolocate() {
     }
 }
 
-/*function isDate(txtDate) {
-
-    var currVal = txtDate;
-
-    if (currVal == '') {
-        return false;
-    }
-    //Declare Regex 
-    var rxDatePattern = "/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/";
-    //DD/MM/YYYY
-    var dtArray = currVal.match(rxDatePattern); // is format OK?
-    if (dtArray === null) {
-        return false;
-    }
-    //Checks for mm/dd/yyyy format.
-    dtMonth = dtArray[1];
-    dtDay = dtArray[3];
-    dtYear = dtArray[5];
-    if (dtMonth < 1 || dtMonth > 12) {
-        return false;
-    } else if (dtDay < 1 || dtDay > 31) {
-        return false;
-    } else if ((dtMonth == 4 || dtMonth == 6 || dtMonth == 9 || dtMonth == 11) && dtDay == 31) {
-        return false;
-    } else if (dtMonth == 2) {
-        var isleap = (dtYear % 4 == 0 && (dtYear % 100 != 0 || dtYear % 400 == 0));
-        if (dtDay > 29 || (dtDay == 29 && !isleap)) {
-            return false;
-        }
-    }
-    return true;
-}*/
-
 function addNewItemToList() {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
@@ -309,48 +284,41 @@ function addNewItemToList() {
                 var inDate = $("#date").val();
                 var inIsWichtig = $("#flipSwitchDetail").val();
                 var inIsDone = false;
-                fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
-                fillListWithData();
-                $(':mobile-pagecontainer').pagecontainer('change', '#home', {
-                    transition: 'flip',
-                    reverse: true,
-                    showLoadMsg: true
-                });
-                
-                
-                /*            if (!$.isNumeric(inPreis)) {
-                                    isValid = false;
-                                }
-                                alert(isValid);
-                                isValid = validateTxt(inName)
-                                alert(isValid);
-                                isValid = validateTxt(inGeschaeft);
-                                alert(isValid);
-                                isValid = validateTxt(inDate);
-                                alert(isValid);*/
+                //fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
+                //fillListWithData();
+                /*                $(':mobile-pagecontainer').pagecontainer('change', '#home', {
+                                    transition: 'flip',
+                                    reverse: true,
+                                    showLoadMsg: true
+                                });*/
+                if (inName == '') {
+                    isValid = false;
+                }
 
+                if (!$.isNumeric(inPreis)) {
+                    isValid = false;
+                }
 
-                //validateData();
+                if (inGeschaeft == '') {
+                    isValid = false;
+                }
 
-                /*                if (isValid) {
-                                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
-                                    fillListWithData();
-                                    $(':mobile-pagecontainer').pagecontainer('change', '#home', {
-                                        transition: 'flip',
-                                        reverse: true,
-                                        showLoadMsg: true
-                                    });
-                                }*/
-                /*            if (isValid) {
-
-                            } else {
-
-                                alert("Bitte eingabe überprüfen!");
-
-                            }*/
+                if (isValid) {
+                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
+                    fillListWithData();
+                    $(':mobile-pagecontainer').pagecontainer('change', '#home', {
+                        transition: 'flip',
+                        reverse: true,
+                        showLoadMsg: true
+                    });
+                } else {
+                    alert("Bitte eingabe überprüfen!");
+                }
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
+        } else {
+            alert("Bitte eingabe überprüfen!");
         }
     });
 }
@@ -384,12 +352,6 @@ function drawDetailMap(inLat, inLng) {
     detailMap = new google.maps.Map(canvas, mapOptions);
     detailMap.setCenter(latlng);
     //resizeDetailMap();
-}
-
-function validateTxt(txt) {
-    if (txt == '') {
-        return false;
-    }
 }
 
 /*function validateData() {
