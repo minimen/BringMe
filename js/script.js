@@ -15,7 +15,7 @@ $(document).ready(function () {
     fillListWithData();
     addMarkerToMap();
     google.maps.event.addDomListener(window, 'load', initialize);
-    $("#save").click(getAddressFromCoords);
+    $("#save").click(addNewItemToList);
     $('#save').bind('click', function () {
         var txtVal = $('#txtDate').val();
         if (isDate(txtVal)) {
@@ -118,6 +118,17 @@ function fillDetailPage() {
             } else {
                 $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
             }
+
+
+            var mapCanvas = document.getElementById('detailMap');
+            var mapOptions = {
+                zoom: 16,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var detMap = new google.maps.Map(mapCanvas, mapOptions);
+
+
+
 
             $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
                 transition: 'flip',
@@ -247,7 +258,7 @@ function isDate(txtDate) {
     return true;
 }
 
-function getAddressFromCoords() {
+function addNewItemToList() {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address': $("#autocomplete").val()
@@ -263,18 +274,7 @@ function getAddressFromCoords() {
             var inIsWichtig = $("#flipSwitchDetail").val();
             var inIsDone = false;
             fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
-
             fillListWithData();
-
-            var detailMap = document.getElementById('map-canvas');
-            var mapOptions = {
-                zoom: 16,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            map = new google.maps.Map(mapCanvas, mapOptions);
-
-
-
             $(':mobile-pagecontainer').pagecontainer('change', '#home', {
                 transition: 'flip',
                 reverse: true,
