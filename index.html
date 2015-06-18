@@ -31,10 +31,16 @@
     <!--Geolocation-->
     <script src="js/geolocator.js"></script>
 
+    <script>
+        $(document).on("pageshow", "#pagetwo", function () {
+            alert("pageshow event fired - pagetwo is now shown");
+        });
+    </script>
+
 </head>
 
 <body>
-<!-- Homescreen -->
+    <!-- Homescreen -->
     <div data-role="page" id="home">
         <div role="main" class="ui-content"></div>
         <div data-role="header">
@@ -54,20 +60,20 @@
         <!-- /footer -->
     </div>
 
-<!-- Neuer Eintrag -->
+    <!-- Neuer Eintrag -->
     <div data-role="page" id="addnew">
         <div data-role="header">
             <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back ui-btn-icon-notext" style="background-color: #912240;"></a>
             <h1>Eintrag hinzufügen</h1>
         </div>
         <div role="main" class="ui-content">
-            <form>
+            <form id="formNewItem">
                 <fieldset>
-                    <input type="text" id="name" placeholder="Name">
-                    <input type="text" id="preis" placeholder="Preis">
-                    <input id="autocomplete" placeholder="Adresse" onFocus="geolocate()" type="text">
-                    <input type="text" id="geschaeft" placeholder="Geschäft">
-                    <input type="date" id="date" placeholder="Erledigen bis...">
+                    <input type="text" id="name" name="name" placeholder="Name">
+                    <input type="number" id="preis" name="preis" placeholder="Preis">
+                    <input id="autocomplete" name="address" placeholder="Adresse" onFocus="geolocate()" type="text">
+                    <input type="text" id="geschaeft" name="geschaeft" placeholder="Geschäft">
+                    <input type="date" id="date" name="date" placeholder="Erledigen bis...">
                     <div class="ui-field-contain">
                         <input type="checkbox" data-role="flipswitch" id="flipSwitchNewEintrag" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
                     </div>
@@ -85,7 +91,7 @@
         </div>
     </div>
 
-<!--Detail Seite-->
+    <!--Detail Seite-->
     <div data-role="page" id="eintragDetail">
         <div data-role="header">
             <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn ui-icon-back ui-btn-icon-notext" style="background-color: #912240;"></a>
@@ -93,33 +99,56 @@
         </div>
         <div role="main" class="ui-content">
             <table>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 397bc131e11b5b2089b03ebbab70763a903c85bd
                 <tr>
-                    <td><p>Produkt:</p></td>
-                    <td><p id="labelName"></p></td>
-                </tr>
-                
-                <tr>
-                    <td><p>Preis:</p>
-                    <td><p id="labelPreis"></p></td>
-                </tr>
-                
-                <tr>
-                    <td><p>Adresse:</p></td>    
-                    <td><p id="labelAdresse"></p></td>
-                </tr>
-                
-                <tr>
-                    <td><p>Geschäft:</p></td>
-                    <td><p id="labelGeschaeft"></p></td>
+                    <td>
+                        <p>Produkt:</p>
+                    </td>
+                    <td>
+                        <p id="labelName"></p>
+                    </td>
                 </tr>
 
                 <tr>
-                    <td><p>Erledigen bis am:</p></td>
-                    <td></td><p id="labelDate"></p></td>
+                    <td>
+                        <p>Preis:</p>
+                        <td>
+                            <p id="labelPreis"></p>
+                        </td>
                 </tr>
-                
+
+                <tr>
+                    <td>
+                        <p>Adresse:</p>
+                    </td>
+                    <td>
+                        <p id="labelAdresse"></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <p>Geschäft:</p>
+                    </td>
+                    <td>
+                        <p id="labelGeschaeft"></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <p>Erledigen bis am:</p>
+                    </td>
+                    <td>
+                        <p id="labelDate"></p>
+                    </td>
+                </tr>
+
             </table>
-            
+
             <label>Erledigt?
                 <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
             </label>

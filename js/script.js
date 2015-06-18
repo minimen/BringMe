@@ -1,6 +1,6 @@
 var eintragObjArray = [];
 var idObjArray = 0;
-var map, google, placeSearch, autocomplete, idToDelete;
+var map, detailMap, google, placeSearch, autocomplete, idToDelete, currentLocation;
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -16,16 +16,21 @@ $(document).ready(function () {
     addMarkerToMap();
     google.maps.event.addDomListener(window, 'load', initialize);
     $("#save").click(addNewItemToList);
-    $('#save').bind('click', function () {
-        var txtVal = $('#txtDate').val();
-        if (isDate(txtVal)) {
-            alert('Valid Date');
-        } else {
-            alert('Invalid Date');
-        }
-    });
+    /*$('#save').bind('click', function () {
+    var txtVal = $('#txtDate').val();
+    if (isDate(txtVal)) {
+        alert('Valid Date');
+    } else {
+        alert('Invalid Date');
+    }
+});*/
 
     $("#deleteItem").click(deleteItem);
+
+
+    $(document).on("pageshow", "#eintragDetail", function () {
+        google.maps.event.trigger(detailMap, 'resize');
+    });
 
     /*$("#home").on("pageshow", )*/
 });
@@ -34,7 +39,7 @@ function initialize() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+            currentLocation = pos;
             map.setCenter(pos);
         }, function () {
             handleNoGeolocation(true);
@@ -76,8 +81,6 @@ function initialize() {
 
     GeoMarker.setMap(map);
 
-
-
     var GeoMarker = new GeolocationMarker(map);
 }
 
@@ -108,6 +111,7 @@ function fillDetailPage() {
             document.getElementById('labelPreis').textContent = curObj.preis;
             document.getElementById('labelAdresse').textContent = curObj.adresse;
             document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
+            document.getElementById('labelDate').textContent = curObj.date;
             if (curObj.isDone == true) {
                 $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
             } else {
@@ -119,16 +123,7 @@ function fillDetailPage() {
                 $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
             }
 
-
-            var mapCanvas = document.getElementById('detailMap');
-            var mapOptions = {
-                zoom: 16,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var detMap = new google.maps.Map(mapCanvas, mapOptions);
-
-
-
+            drawDetailMap(curObj.lat, curObj.lng);
 
             $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
                 transition: 'flip',
@@ -137,7 +132,6 @@ function fillDetailPage() {
             });
         }
     })
-
 }
 
 function handleNoGeolocation(errorFlag) {
@@ -186,7 +180,8 @@ function getAdressFromCoords(inLng, inLat) {
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                addMarkerToMap();
+                alert(results[1].formatted_address);
+                //addMarkerToMap();
                 return results[1].formatted_address;
             } else {
                 alert('No results found');
@@ -225,7 +220,7 @@ function geolocate() {
     }
 }
 
-function isDate(txtDate) {
+/*function isDate(txtDate) {
 
     var currVal = txtDate;
 
@@ -256,7 +251,7 @@ function isDate(txtDate) {
         }
     }
     return true;
-}
+}*/
 
 function addNewItemToList() {
     var geocoder = new google.maps.Geocoder();
@@ -264,7 +259,7 @@ function addNewItemToList() {
         'address': $("#autocomplete").val()
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-
+            var isValid = true;
             var inName = $("#name").val();
             var inPreis = $("#preis").val();
             var inLat = results[0].geometry.location.lat();
@@ -273,6 +268,9 @@ function addNewItemToList() {
             var inDate = $("#date").val();
             var inIsWichtig = $("#flipSwitchDetail").val();
             var inIsDone = false;
+
+            //validateData();
+
             fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
             fillListWithData();
             $(':mobile-pagecontainer').pagecontainer('change', '#home', {
@@ -280,6 +278,14 @@ function addNewItemToList() {
                 reverse: true,
                 showLoadMsg: true
             });
+
+            /*            if (isValid) {
+
+                        } else {
+
+                            alert("Bitte eingabe überprüfen!");
+
+                        }*/
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -291,3 +297,60 @@ function deleteItem() {
     addMarkerToMap();
     fillListWithData();
 }
+
+function drawDetailMap(inLat, inLng) {
+    var lat = parseFloat(inLat);
+    var lng = parseFloat(inLng);
+    var latlng = new google.maps.LatLng(lat, lng);
+    var canvas = document.getElementById('detailMap');
+    var mapOptions = {
+        zoom: 16,
+        center: {
+            lng: lng,
+            lat: lat
+        },
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+            //,center: latlng
+    };
+    /*    var detailMarker = new google.maps.Marker({
+            position: latlng,
+            map: detailMap
+        });*/
+    alert(latlng);
+
+    detailMap = new google.maps.Map(canvas, mapOptions);
+    detailMap.setCenter(latlng);
+    //resizeDetailMap();
+}
+
+/*function validateData() {
+    $('#formNewItem').validate({ // initialize the plugin
+        rules: {
+            name: {
+                required: true,
+                minlength: 1
+            },
+            preis: {
+                required: true,
+                minlength: 1,
+                n
+            },
+            address: {
+                required: true,
+                minlength: 5
+            },
+            geschaeft: {
+                required: true,
+                minlength: 5
+            },
+            date: {
+                required: true,
+                minlength: 5
+            }
+        },
+        submitHandler: function (form) { // for demo
+            alert('valid form submitted'); // for demo
+            return false; // for demo
+        }
+    });
+}*/
