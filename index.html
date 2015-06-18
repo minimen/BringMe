@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <!-- Homescreen -->
+<!-- Homescreen -->
     <div data-role="page" id="home">
         <div role="main" class="ui-content"></div>
         <div data-role="header">
@@ -54,7 +54,7 @@
         <!-- /footer -->
     </div>
 
-    <!-- Neuer Eintrag -->
+<!-- Neuer Eintrag -->
     <div data-role="page" id="addnew">
         <div data-role="header">
             <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back ui-btn-icon-notext" style="background-color: #912240;"></a>
@@ -85,15 +85,17 @@
         </div>
     </div>
 
-    <!--Detail Seite-->
+<!--Detail Seite-->
     <div data-role="page" id="eintragDetail">
         <div data-role="header">
-            <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn ui-icon-home ui-btn-icon-notext" style="background-color: #912240;"></a>
+            <a href="#home" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn ui-icon-back ui-btn-icon-notext" style="background-color: #912240;"></a>
             <h1>Details</h1>
         </div>
         <div role="main" class="ui-content">
             <table>
+                
                 <tr>
+<<<<<<< HEAD
                     <td>
                         <label for="pProdukt">Produkt:</label>
                     </td>
@@ -168,7 +170,34 @@
 
                     <label for="pDate">Erledigen bis am:</label>
                     <label id="labelDate"></label>
+=======
+                    <td><p>Produkt:</p></td>
+                    <td><p id="labelName"></p></td>
+                </tr>
+                
+                <tr>
+                    <td><p>Preis:</p>
+                    <td><p id="labelPreis"></p></td>
+                </tr>
+                
+                <tr>
+                    <td><p>Adresse:</p></td>    
+                    <td><p id="labelAdresse"></p></td>
+                </tr>
+                
+                <tr>
+                    <td><p>Geschäft:</p></td>
+                    <td><p id="labelGeschaeft"></p></td>
+                </tr>
+
+                <tr>
+                    <td><p>Erledigen bis am:</p></td>
+                    <td></td><p id="labelDate"></p></td>
+                </tr>
+                
+>>>>>>> 81bad9630d07a6973432a77f8075b5612895f690
             </table>
+            
             <label>Erledigt?
                 <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
             </label>
