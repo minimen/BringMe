@@ -1,6 +1,6 @@
 var eintragObjArray = [];
 var idObjArray = 0;
-var map, detailMap, google, placeSearch, autocomplete, idToDelete;
+var map, detailMap, google, placeSearch, autocomplete, idToDelete, currentLocation;
 var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
@@ -16,14 +16,14 @@ $(document).ready(function () {
     addMarkerToMap();
     google.maps.event.addDomListener(window, 'load', initialize);
     $("#save").click(addNewItemToList);
-    $('#save').bind('click', function () {
-        var txtVal = $('#txtDate').val();
-        if (isDate(txtVal)) {
-            alert('Valid Date');
-        } else {
-            alert('Invalid Date');
-        }
-    });
+    /*$('#save').bind('click', function () {
+    var txtVal = $('#txtDate').val();
+    if (isDate(txtVal)) {
+        alert('Valid Date');
+    } else {
+        alert('Invalid Date');
+    }
+});*/
 
     $("#deleteItem").click(deleteItem);
 
@@ -39,7 +39,7 @@ function initialize() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+            currentLocation = pos;
             map.setCenter(pos);
         }, function () {
             handleNoGeolocation(true);
@@ -123,17 +123,6 @@ function fillDetailPage() {
                 $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
             }
 
-            /*      var mapCanvas2 = document.getElementById('detailMap');
-            var mapOptions = {
-                zoom: 16,
-                center: {
-                    34.397,
-                    150.644
-                },
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var detMap = new google.maps.Map(mapCanvas2, mapOptions);*/
-
             drawDetailMap(curObj.lat, curObj.lng);
 
             $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
@@ -143,7 +132,6 @@ function fillDetailPage() {
             });
         }
     })
-
 }
 
 function handleNoGeolocation(errorFlag) {
@@ -192,7 +180,8 @@ function getAdressFromCoords(inLng, inLat) {
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                addMarkerToMap();
+                alert(results[1].formatted_address);
+                //addMarkerToMap();
                 return results[1].formatted_address;
             } else {
                 alert('No results found');
@@ -231,7 +220,7 @@ function geolocate() {
     }
 }
 
-function isDate(txtDate) {
+/*function isDate(txtDate) {
 
     var currVal = txtDate;
 
@@ -262,7 +251,7 @@ function isDate(txtDate) {
         }
     }
     return true;
-}
+}*/
 
 function addNewItemToList() {
     var geocoder = new google.maps.Geocoder();
@@ -270,7 +259,7 @@ function addNewItemToList() {
         'address': $("#autocomplete").val()
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-
+            var isValid = true;
             var inName = $("#name").val();
             var inPreis = $("#preis").val();
             var inLat = results[0].geometry.location.lat();
@@ -279,6 +268,9 @@ function addNewItemToList() {
             var inDate = $("#date").val();
             var inIsWichtig = $("#flipSwitchDetail").val();
             var inIsDone = false;
+
+            //validateData();
+
             fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
             fillListWithData();
             $(':mobile-pagecontainer').pagecontainer('change', '#home', {
@@ -286,6 +278,14 @@ function addNewItemToList() {
                 reverse: true,
                 showLoadMsg: true
             });
+
+            /*            if (isValid) {
+
+                        } else {
+
+                            alert("Bitte eingabe überprüfen!");
+
+                        }*/
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -305,16 +305,52 @@ function drawDetailMap(inLat, inLng) {
     var canvas = document.getElementById('detailMap');
     var mapOptions = {
         zoom: 16,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: latlng
+        center: {
+            lng: lng,
+            lat: lat
+        },
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+            //,center: latlng
     };
-    var detMarker = new google.maps.Marker({
-        position: latlng,
-        map: detailMap
-    });
+    /*    var detailMarker = new google.maps.Marker({
+            position: latlng,
+            map: detailMap
+        });*/
     alert(latlng);
 
-
     detailMap = new google.maps.Map(canvas, mapOptions);
+    detailMap.setCenter(latlng);
     //resizeDetailMap();
 }
+
+/*function validateData() {
+    $('#formNewItem').validate({ // initialize the plugin
+        rules: {
+            name: {
+                required: true,
+                minlength: 1
+            },
+            preis: {
+                required: true,
+                minlength: 1,
+                n
+            },
+            address: {
+                required: true,
+                minlength: 5
+            },
+            geschaeft: {
+                required: true,
+                minlength: 5
+            },
+            date: {
+                required: true,
+                minlength: 5
+            }
+        },
+        submitHandler: function (form) { // for demo
+            alert('valid form submitted'); // for demo
+            return false; // for demo
+        }
+    });
+}*/

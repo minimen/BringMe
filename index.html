@@ -67,13 +67,13 @@
             <h1>Eintrag hinzufügen</h1>
         </div>
         <div role="main" class="ui-content">
-            <form>
+            <form id="formNewItem">
                 <fieldset>
-                    <input type="text" id="name" placeholder="Name">
-                    <input type="text" id="preis" placeholder="Preis">
-                    <input id="autocomplete" placeholder="Adresse" onFocus="geolocate()" type="text">
-                    <input type="text" id="geschaeft" placeholder="Geschäft">
-                    <input type="date" id="date" placeholder="Erledigen bis...">
+                    <input type="text" id="name" name="name" placeholder="Name">
+                    <input type="number" id="preis" name="preis" placeholder="Preis">
+                    <input id="autocomplete" name="address" placeholder="Adresse" onFocus="geolocate()" type="text">
+                    <input type="text" id="geschaeft" name="geschaeft" placeholder="Geschäft">
+                    <input type="date" id="date" name="date" placeholder="Erledigen bis...">
                     <div class="ui-field-contain">
                         <input type="checkbox" data-role="flipswitch" id="flipSwitchNewEintrag" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
                     </div>
