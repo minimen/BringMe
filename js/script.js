@@ -86,7 +86,7 @@ function initialize() {
 }
 
 function addDefaultData() {
-    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", true, false);
+    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
     fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
     fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
 }
@@ -121,13 +121,19 @@ function fillDetailPage() {
                 $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
             }
 
-            //alert("isWichtig: " + curObj.isWichtig);
-            var fts = $('#flipSwitchDetail');
-            if (curObj.isWichtig == false) {
-                fts.val('off');
+            if (curObj.isWichtig == true) {
+                document.getElementById('labelIsWichtig').textContent = "Ja";
             } else {
-                fts.val('on');
+                document.getElementById('labelIsWichtig').textContent = "Nein";
+
             }
+            //alert("isWichtig: " + curObj.isWichtig);
+            /* var fts = $('#flipSwitchDetail');
+ if (curObj.isWichtig == false) {
+     fts.val('off');
+ } else {
+     fts.val('on');
+ }*/
             //fts.flipswitch('refresh');
 
             drawDetailMap(curObj.lat, curObj.lng);
@@ -282,7 +288,8 @@ function addNewItemToList() {
                 var inLng = results[0].geometry.location.lng();
                 var inGeschaeft = $("#geschaeft").val();
                 var inDate = $("#date").val();
-                var inIsWichtig = $("#flipSwitchDetail").val();
+                var inIsWichtig = $("#flipSwitchNewEintrag").val();
+                alert(inIsWichtig);
                 var inIsDone = false;
                 //fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
                 //fillListWithData();
@@ -353,34 +360,3 @@ function drawDetailMap(inLat, inLng) {
     detailMap.setCenter(latlng);
     //resizeDetailMap();
 }
-
-/*function validateData() {
-    alert("val");
-    $('#formNewItem').validate({ // initialize the plugin
-        rules: {
-            name: {
-                required: true,
-                minlength: 1
-            },
-            preis: {
-                required: true,
-                minlength: 1
-            },
-            address: {
-                required: true,
-                minlength: 1
-            },
-            geschaeft: {
-                required: true,
-                minlength: 1
-            },
-            date: {
-                required: true,
-                minlength: 1
-            }
-        },
-        submitHandler: function (form) {
-
-        }
-    });
-}*/

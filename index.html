@@ -101,45 +101,50 @@
             <table>
                 <tr>
                     <td>
-                        <p><b>Produkt:</b></p>
+                        <p>Produkt:</p>
                     </td>
-                    <td>
-                        <p id="labelName"></p>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <p><b>Preis:</b></p>
-                        <td>
-                            <p id="labelPreis"></p>
-                        </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <p><b>Adresse:</b></p>
-                    </td>
-                    <td>
-                        <p id="labelAdresse"></p>
+                    <td id="labelName">
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <p><b>Geschäft:</b></p>
+                        <p>Preis:</p>
                     </td>
-                    <td>
-                        <p id="labelGeschaeft"></p>
+                    <td id="labelPreis">
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <p><b>Erledigen bis am:</b></p>
+                        <p>Adresse:</p>
+                    </td>
+                    <td id="labelAdresse">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <p>Geschäft:</p>
+                    </td>
+                    <td id="labelGeschaeft">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <p>Erledigen bis am:</p>
                     </td>
                     <td>
                         <p id="labelDate"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Wichtig?</p>
+                    </td>
+                    <td>
+                        <p id="labelIsWichtig"></p>
                     </td>
                 </tr>
 
@@ -148,9 +153,9 @@
             <label>Erledigt?
                 <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
             </label>
-            <div class="ui-field-contain">
-                <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
-            </div>
+            <!--<div class="ui-field-contain">
+    <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
+</div>-->
             <div>
                 <a href="#home" class="ui-btn" id="deleteItem">Eintrag löschen</a>
             </div>

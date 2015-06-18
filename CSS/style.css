@@ -9,8 +9,8 @@ body {
     border: solid 2px #FF0000;
 }
 
-td {
-    padding-right: 15px;
+table {
+    line-height: 0%;
 }
 
 #map-canvas {
