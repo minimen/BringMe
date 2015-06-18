@@ -42,7 +42,6 @@
 <body>
     <!-- Homescreen -->
     <div data-role="page" id="home">
-        <div role="main" class="ui-content"></div>
         <div data-role="header">
             <h1>BringMe</h1>
         </div>
@@ -54,8 +53,8 @@
             <div id="map-canvas"></div>
         </div>
         <!-- /content -->
-        <div data-role="footer">
-            <h4>Page Footer</h4>
+        <div data-role="footer" data-position="fixed">
+            <h4>© Copyright 2015 by Alex und Armando</h4>
         </div>
         <!-- /footer -->
     </div>
@@ -76,6 +75,7 @@
                     <input type="date" id="date" name="date" placeholder="Erledigen bis...">
                     <div class="ui-field-contain">
                         <input type="checkbox" data-role="flipswitch" id="flipSwitchNewEintrag" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
+
                     </div>
                     <div data-role="navbar">
                         <ul>
@@ -86,8 +86,8 @@
                 </fieldset>
             </form>
         </div>
-        <div data-role="footer">
-            <h4>Page Footer</h4>
+        <div data-role="footer" data-position="fixed">
+            <h4>© Copyright 2015 by Alex und Armando</h4>
         </div>
     </div>
 
@@ -101,7 +101,7 @@
             <table>
                 <tr>
                     <td>
-                        <p>Produkt:</p>
+                        <p class="bold">Produkt:</p>
                     </td>
                     <td id="labelName">
                     </td>
@@ -109,7 +109,7 @@
 
                 <tr>
                     <td>
-                        <p>Preis:</p>
+                        <p class="bold">Preis:</p>
                     </td>
                     <td id="labelPreis">
                     </td>
@@ -117,7 +117,7 @@
 
                 <tr>
                     <td>
-                        <p>Adresse:</p>
+                        <p class="bold">Adresse:</p>
                     </td>
                     <td id="labelAdresse">
                     </td>
@@ -125,7 +125,7 @@
 
                 <tr>
                     <td>
-                        <p>Geschäft:</p>
+                        <p class="bold">Geschäft:</p>
                     </td>
                     <td id="labelGeschaeft">
                     </td>
@@ -133,7 +133,7 @@
 
                 <tr>
                     <td>
-                        <p>Erledigen bis am:</p>
+                        <p class="bold">Erledigen bis am:</p>
                     </td>
                     <td>
                         <p id="labelDate"></p>
@@ -141,30 +141,42 @@
                 </tr>
                 <tr>
                     <td>
-                        <p>Wichtig?</p>
+                        <p class="bold">Dringlich?</p>
                     </td>
                     <td>
                         <p id="labelIsWichtig"></p>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <p class="bold">Erledigt?</p>
+                    </td>
+                    <td>
+                        <p id="labelIsDone"></p>
+                    </td>
+                </tr>
 
             </table>
 
-            <label>Erledigt?
-                <input type="checkbox" name="isDoneCheckbox" id="isDone" class="custom" />
-            </label>
-            <!--<div class="ui-field-contain">
-    <input type="checkbox" data-role="flipswitch" id="flipSwitchDetail" data-on-text="Wichtig" data-off-text="Unwichtig" data-wrapper-class="custom-size-flipswitch">
-</div>-->
             <div>
-                <a href="#home" class="ui-btn" id="deleteItem">Eintrag löschen</a>
+
             </div>
+
+            <div data-role="navbar" id="navbar">
+                <ul>
+                    <li><a href="#" id="isDone" data-role="button">Erledigt?</a>
+                    </li>
+                    <li><a href="#home" class="ui-btn" id="deleteItem">Eintrag löschen</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /navbar -->
 
             <div id="detailMap"></div>
 
         </div>
-        <div data-role="footer">
-            <h4>Page Footer</h4>
+        <div data-role="footer" data-position="fixed">
+            <h4>© Copyright 2015 by Alex und Armando</h4>
         </div>
     </div>
 

@@ -1,4 +1,8 @@
 var eintragObjArray = [];
+var jaNeinObj = {
+    ja: "Ja",
+    nein: "Nein"
+};
 var idObjArray = 0;
 var loadedOnce = false;
 var map, detailMap, google, placeSearch, autocomplete, idToDelete, currentLocation;
@@ -25,11 +29,16 @@ $(document).ready(function () {
     }
 });*/
 
+
     $("#deleteItem").click(deleteItem);
 
 
     $(document).on("pageshow", "#eintragDetail", function () {
         google.maps.event.trigger(detailMap, 'resize');
+    });
+
+    $(document).on("pageshow", "#home", function () {
+        google.maps.event.trigger(map, 'resize');
     });
 
     /*$("#home").on("pageshow", )*/
@@ -114,19 +123,39 @@ function fillDetailPage() {
             document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
             document.getElementById('labelDate').textContent = curObj.date;
 
-            //alert("isDone: " + curObj.isDone);
             if (curObj.isDone == true) {
-                $('#isDoneCheckbox').prop('checked', true).checkboxradio('refresh');
+                $('#isDoneCheckbox').prop('checked', true);
             } else {
-                $('#isDoneCheckbox').prop('checked', false).checkboxradio('refresh');
+                $('#isDoneCheckbox').prop('checked', false);
+
             }
 
             if (curObj.isWichtig == true) {
-                document.getElementById('labelIsWichtig').textContent = "Ja";
+                document.getElementById('labelIsWichtig').textContent = jaNeinObj.ja;
             } else {
-                document.getElementById('labelIsWichtig').textContent = "Nein";
+                document.getElementById('labelIsWichtig').textContent = jaNeinObj.nein;
 
             }
+
+            if (curObj.isDone == true) {
+                document.getElementById('labelIsDone').textContent = jaNeinObj.ja;
+            } else {
+                document.getElementById('labelIsDone').textContent = jaNeinObj.nein;
+
+            }
+
+
+            $("#isDone").click(function () {
+                curObj.isDone = !curObj.isDone;
+                if (curObj.isDone) {
+                    $('#labelIsDone').text(jaNeinObj.ja);
+
+                } else {
+                    $('#labelIsDone').text(jaNeinObj.nein);
+                }
+
+            });
+
             //alert("isWichtig: " + curObj.isWichtig);
             /* var fts = $('#flipSwitchDetail');
  if (curObj.isWichtig == false) {
@@ -144,7 +173,7 @@ function fillDetailPage() {
                 showLoadMsg: true
             });
         }
-    })
+    });
 }
 
 function handleNoGeolocation(errorFlag) {
@@ -205,41 +234,6 @@ function getAdressFromCoords(inLng, inLat) {
     });
 }
 
-/*
-function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
-    var lat = parseFloat(inLat);
-    var lng = parseFloat(inLng);
-    var latlng = new google.maps.LatLng(lat, lng);
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({
-        'latLng': latlng
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-                var newEintrag = {
-                    id: idObjArray,
-                    name: inName,
-                    preis: inPreis,
-                    lng: inLng,
-                    lat: inLat,
-                    adresse: results[1].formatted_address,
-                    geschaeft: inGeschaeft,
-                    date: inDate,
-                    isWichtig: inIsWichtig,
-                    isDone: inIsDone
-                };
-                idObjArray += 1;
-                eintragObjArray.push(newEintrag);
-                addMarkerToMap();
-            } else {
-                alert('No results found');
-            }
-        } else {
-            alert('Geocoder failed due to: ' + status);
-        }
-    });
-}*/
-
 function addMarkerToMap() {
     if (!loadedOnce) {
         //alert("add");
@@ -288,16 +282,11 @@ function addNewItemToList() {
                 var inLng = results[0].geometry.location.lng();
                 var inGeschaeft = $("#geschaeft").val();
                 var inDate = $("#date").val();
-                var inIsWichtig = $("#flipSwitchNewEintrag").val();
-                alert(inIsWichtig);
+                var isDringlich = false;
+                if ($('#flipSwitchNewEintrag').is(":checked")) {
+                    isDringlich = true;
+                }
                 var inIsDone = false;
-                //fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
-                //fillListWithData();
-                /*                $(':mobile-pagecontainer').pagecontainer('change', '#home', {
-                                    transition: 'flip',
-                                    reverse: true,
-                                    showLoadMsg: true
-                                });*/
                 if (inName == '') {
                     isValid = false;
                 }
@@ -311,7 +300,7 @@ function addNewItemToList() {
                 }
 
                 if (isValid) {
-                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone);
+                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, isDringlich, inIsDone);
                     fillListWithData();
                     $(':mobile-pagecontainer').pagecontainer('change', '#home', {
                         transition: 'flip',
