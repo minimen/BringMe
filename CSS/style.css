@@ -10,8 +10,15 @@ body {
     margin: 2.5px;
 }
 
-.error {
-    border: solid 2px #FF0000;
+#eintraegeList {
+    height: 200px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    border: transparent;
+}
+
+#fehlerMeldungen {
+    color: red;
 }
 
 table {

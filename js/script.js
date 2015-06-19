@@ -307,17 +307,17 @@ function addNewItemToList() {
                 var inIsDone = false;
                 if (inName == '') {
                     isValid = false;
-                    errorMessage += "Namen eingeben";
+                    errorMessage += 'Namen eingeben! ';
                 }
 
                 if (!$.isNumeric(inPreis)) {
                     isValid = false;
-                    errorMessage += "Nummerischen eingeben";
+                    errorMessage += 'Nummerischen Preis eingeben! ';
                 }
 
                 if (inGeschaeft == '') {
                     isValid = false;
-                    errorMessage += "Geschaeft eingeben";
+                    errorMessage += "Geschaeft eingeben!";
                 }
 
                 if (isValid) {
@@ -328,19 +328,17 @@ function addNewItemToList() {
                         reverse: true,
                         showLoadMsg: true
                     });
-                    $(':input').val('');
+                    //$(':input').val('');
 
                 } else {
                     $('#fehlerMeldungen').text(errorMessage);
-                    alert("Bitte eingabe überprüfen! 1");
+                    // alert("Bitte eingabe überprüfen!");
                 }
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         } else {
-            $('#fehlerMeldungen').text(errorMessage);
-
-            alert("Bitte eingabe überprüfen! 2");
+            $('#fehlerMeldungen').text("Bitte eine korrekte Adresse eingeben");
         }
     });
 }
