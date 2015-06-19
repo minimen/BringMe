@@ -86,11 +86,11 @@ var GeoMarker = new GeolocationMarker(map);*/
 
 //Daten aus eintragObjArray verwendet, um erste eintraege zu haben
 function addDefaultData() {
-    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
-    fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
-    fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
-    fillEintragObjArray("Apfel (1kg)", "6", "47.37510", "8.53865", "Globus", "20.06.2015", false, false);
-    fillEintragObjArray("Seife", "4.95", "47.37879", "8.53599", "24h Shop", "20.06.2015", false, false);
+    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "Migros", "16.06.2015 ", false, false);
+    fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "Coop", "21.06.2015", true, false);
+    fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "Migros", "20.06.2015", true, false);
+    fillEintragObjArray("Apfel (1kg)", "6", "47.37510", "8.53865", "Globus Delikatessen", "Globus", "20.06.2015", false, false);
+    fillEintragObjArray("Seife", "4.95", "47.37879", "8.53599", "24h Shop", "24h Shop", "20.06.2015", false, false);
 }
 
 //Generiert 3 stanrard Eintraege
@@ -114,7 +114,7 @@ function fillDetailPage() {
             idToDelete = index;
             markerIdToDelete = index;
             document.getElementById('labelName').textContent = curObj.name;
-            document.getElementById('labelPreis').textContent = curObj.preis;
+            document.getElementById('labelPreis').textContent = curObj.preis + "Fr";
             document.getElementById('labelAdresse').textContent = curObj.adresse;
             document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
             document.getElementById('labelDate').textContent = curObj.date;
@@ -143,7 +143,6 @@ function fillDetailPage() {
                 } else {
                     $('#labelIsDone').text(jaNeinObj.nein);
                 }
-
             });
 
             //alert("isWichtig: " + curObj.isWichtig);
@@ -153,8 +152,6 @@ function fillDetailPage() {
  } else {
      fts.val('on');
  }*/
-            //fts.flipswitch('refresh');
-
             drawDetailMap(curObj.lat, curObj.lng);
 
             $(':mobile-pagecontainer').pagecontainer('change', '#eintragDetail', {
@@ -218,6 +215,7 @@ function getAdressFromCoords(inLat, inLng) {
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
+                tmpAdress = results[1].formatted_address;
                 $('#labelAdresse').text(results[1].formatted_address);
             } else {
                 alert('No results found');
