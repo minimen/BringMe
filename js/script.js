@@ -227,12 +227,7 @@ function getAdressFromCoords(inLat, inLng) {
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                //alert(results[1].formatted_address);
-                //addMarkerToMap();
-                //alert(results[1].formatted_address);
-
-                tmpAdress = results[1].formatted_address;
-                //$('#labelAdresse').text(results[1].formatted_address);
+                $('#labelAdresse').text(results[1].formatted_address);
             } else {
                 alert('No results found');
             }
@@ -330,7 +325,7 @@ function addNewItemToList() {
                         reverse: true,
                         showLoadMsg: true
                     });
-                    //$(':input').val('');
+                    $(':input').val('');
 
                 } else {
                     $('#fehlerMeldungen').text(errorMessage);
