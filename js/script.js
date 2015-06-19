@@ -66,7 +66,7 @@ function initialize() {
 
     addMarkerToMap();
 
-    GeoMarker = new GeolocationMarker();
+    var GeoMarker = new GeolocationMarker(map);
     GeoMarker.setCircleOptions({
         fillColor: '#808080'
     });
@@ -80,9 +80,8 @@ function initialize() {
         alert('There was an error obtaining your position. Message: ' + e.message);
     });
 
-    GeoMarker.setMap(map);
-
-    var GeoMarker = new GeolocationMarker(map);
+    /*GeoMarker.setMap(map);
+var GeoMarker = new GeolocationMarker(map);*/
 }
 
 //Daten aus eintragObjArray verwendet, um erste eintraege zu haben
@@ -90,8 +89,8 @@ function addDefaultData() {
     fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
     fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
     fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
-    fillEintragObjArray("Apfel (1kg)", "6", "47.37510", "8.53865", "Globus", "20.06.2015", true, false);
-    fillEintragObjArray("Seife", "4.95", "47.37879", "8.53599", "24h Shop", "20.06.2015", true, false);
+    fillEintragObjArray("Apfel (1kg)", "6", "47.37510", "8.53865", "Globus", "20.06.2015", false, false);
+    fillEintragObjArray("Seife", "4.95", "47.37879", "8.53599", "24h Shop", "20.06.2015", false, false);
 }
 
 //Generiert 3 stanrard Eintraege
@@ -100,7 +99,6 @@ function fillListWithData() {
     eintragObjArray.forEach(function (currObj) {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
         localStorage.setItem(currObj.id, currObj.adresse);
-
     });
     $("#eintraegeList").listview("refresh");
     $("#eintraegeList li").click(fillDetailPage);
@@ -121,27 +119,21 @@ function fillDetailPage() {
             document.getElementById('labelGeschaeft').textContent = curObj.geschaeft;
             document.getElementById('labelDate').textContent = curObj.date;
 
-            if (curObj.isDone == true) {
-                $('#isDoneCheckbox').prop('checked', true);
-            } else {
-                $('#isDoneCheckbox').prop('checked', false);
+            /*            if (curObj.isWichtig == true) {
+                            document.getElementById('labelIsWichtig').textContent = jaNeinObj.ja;
+                        } else {
+                            document.getElementById('labelIsWichtig').textContent = jaNeinObj.nein;
+                        }
 
-            }
+                        if (curObj.isDone == true) {
+                            document.getElementById('labelIsDone').textContent = jaNeinObj.ja;
+                        } else {
+                            document.getElementById('labelIsDone').textContent = jaNeinObj.nein;
 
-            if (curObj.isWichtig == true) {
-                document.getElementById('labelIsWichtig').textContent = jaNeinObj.ja;
-            } else {
-                document.getElementById('labelIsWichtig').textContent = jaNeinObj.nein;
+                        }*/
 
-            }
-
-            if (curObj.isDone == true) {
-                document.getElementById('labelIsDone').textContent = jaNeinObj.ja;
-            } else {
-                document.getElementById('labelIsDone').textContent = jaNeinObj.nein;
-
-            }
-
+            checkStatusOfItem(curObj.isWichtig, "labelIsWichtig");
+            checkStatusOfItem(curObj.isDone, "labelIsDone");
 
             $("#isDone").click(function () {
                 curObj.isDone = !curObj.isDone;
@@ -193,7 +185,6 @@ function handleNoGeolocation(errorFlag) {
 }
 
 //Methode, um Eintraege in eintragObjArray hinzuzufuegen und div. andere Methoden auszufuehren
-//function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
 function fillEintragObjArray(inName, inPreis, inLat, inLng, inAdress, inGeschaeft, inDate, inIsWichtig, inIsDone) {
 
     var lat = parseFloat(inLat);
@@ -343,11 +334,9 @@ function addNewItemToList() {
 //Ein Element von eintragObjArray entfernen und Abhaengigkeiten anpassen
 function deleteItem() {
     eintragObjArray.splice(idToDelete, 1);
-    alert(markerArray[markerIdToDelete].id);
     addMarkerToMap();
     fillListWithData();
     deleteMarker(markerIdToDelete);
-
 }
 
 //Detail Map initialisieren und Laufroute zeichnen
@@ -362,7 +351,6 @@ function drawDetailMap(inLat, inLng) {
         center: latlng,
         zoom: 16
     };
-
 
     detailMap = new google.maps.Map(canvas, mapOptions);
 
@@ -391,4 +379,17 @@ function deleteMarker(id) {
             return;
         }
     }
+}
+
+//Setzt den Status des Eintrages
+function checkStatusOfItem(elementStatus, label) {
+    if (elementStatus == "undefined") {
+        elementStatus = false;
+    }
+    if (elementStatus == true) {
+        document.getElementById(label).textContent = jaNeinObj.ja;
+    } else {
+        document.getElementById(label).textContent = jaNeinObj.nein;
+    }
+
 }
