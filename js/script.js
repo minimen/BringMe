@@ -14,15 +14,7 @@ var idMarkerArray = 0;
 //Speichert, ob die Seite schon mal geladen wurde
 var loadedOnce = false;
 //Ganz viele globale Variablen
-var map, detailMap, google, placeSearch, autocomplete, idToDelete, markerIdToDelete, currentLocation, directionsDisplay;
-/*var componentForm = {
-    street_number: 'short_name',
-    route: 'long_name',
-    locality: 'long_name',
-    administrative_area_level_1: 'short_name',
-    country: 'long_name',
-    postal_code: 'short_name'
-};*/
+var map, detailMap, google, placeSearch, autocomplete, idToDelete, markerIdToDelete, currentLocation, directionsDisplay, tmpAdress;
 
 //Wenn das Dokument fertig ist, alles initialisieren 
 $(document).ready(function () {
@@ -34,6 +26,7 @@ $(document).ready(function () {
 
     $(document).on("pageshow", "#eintragDetail", function () {
         google.maps.event.trigger(detailMap, 'resize');
+        $('#labelAdresse').text(tmpAdress);
     });
 
     $(document).on("pageshow", "#home", function () {
@@ -104,11 +97,11 @@ function fillListWithData() {
     $("#eintraegeList").empty();
     eintragObjArray.forEach(function (currObj) {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
-        localStorage.setItem(currObj.id, currObj.name);
+        localStorage.setItem(currObj.id, currObj.adresse);
+
     });
     $("#eintraegeList").listview("refresh");
     $("#eintraegeList li").click(fillDetailPage);
-
 }
 
 //Fuellt Detail Seite mit Werten vom selektierten Objekt aus eintragObjArray
@@ -198,7 +191,9 @@ function handleNoGeolocation(errorFlag) {
 }
 
 //Methode, um Eintraege in eintragObjArray hinzuzufuegen und div. andere Methoden auszufuehren
-function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+//function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+function fillEintragObjArray(inName, inPreis, inLat, inLng, inAdress, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+
     var lat = parseFloat(inLat);
     var lng = parseFloat(inLng);
     var adr = getAdressFromCoords(lat, lng);
@@ -208,7 +203,7 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
         preis: inPreis,
         lng: inLng,
         lat: inLat,
-        adresse: "Limmatplatz",
+        adresse: inAdress,
         geschaeft: inGeschaeft,
         date: inDate,
         isWichtig: inIsWichtig,
@@ -232,64 +227,19 @@ function getAdressFromCoords(inLat, inLng) {
             if (results[1]) {
                 //alert(results[1].formatted_address);
                 //addMarkerToMap();
-                return results[1].formatted_address;
+                //alert(results[1].formatted_address);
+
+                tmpAdress = results[1].formatted_address;
+                //$('#labelAdresse').text(results[1].formatted_address);
             } else {
                 alert('No results found');
-
             }
         } else {
             alert('Geocoder failed due to: ' + status);
         }
-
     });
 
 }
-
-/*$.when($.ajax("/page1.php"), $.ajax("/page2.php")).done(function (a1, a2) {
-    // a1 and a2 are arguments resolved for the page1 and page2 ajax requests, respectively.
-    // Each argument is an array with the following structure: [ data, statusText, jqXHR ]
-    var data = a1[0] + a2[0]; // a1[ 0 ] = "Whip", a2[ 0 ] = " It"
-    if (/Whip It/.test(data)) {
-        alert("We got what we came for!");
-    }
-});*/
-
-/*function adressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
-    var lat = parseFloat(inLat);
-    var lng = parseFloat(inLng);
-    var latlng = new google.maps.LatLng(lat, lng);
-    var geocoder = new google.maps.Geocoder();
-    setTimeout(null, 5000)
-    geocoder.geocode({
-        'latLng': latlng
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-                var newEintrag = {
-                    id: idObjArray,
-                    name: inName,
-                    preis: inPreis,
-                    lng: inLng,
-                    lat: inLat,
-                    adresse: results[1].formatted_address,
-                    geschaeft: inGeschaeft,
-                    date: inDate,
-                    isWichtig: inIsWichtig,
-                    isDone: inIsDone
-                };
-                idObjArray += 1;
-                eintragObjArray.push(newEintrag);
-                addMarkerToMap();
-                localStorage.setItem(newEintrag.id, newEintrag.name);
-            } else {
-                alert('No results found');
-            }
-        } else {
-            alert('Geocoder failed due to: ' + status);
-        }
-    });
-}*/
-
 
 //Fuegt Marker zur Uebersichts-Karte hinzu 
 function addMarkerToMap() {
@@ -371,7 +321,7 @@ function addNewItemToList() {
                 }
 
                 if (isValid) {
-                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, isDringlich, inIsDone);
+                    fillEintragObjArray(inName, inPreis, inLat, inLng, "", inGeschaeft, inDate, isDringlich, inIsDone);
                     fillListWithData();
                     $(':mobile-pagecontainer').pagecontainer('change', '#home', {
                         transition: 'flip',
