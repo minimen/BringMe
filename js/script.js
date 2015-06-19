@@ -94,9 +94,9 @@ function initialize() {
 
 //Daten aus eintragObjArray verwendet, um erste eintraege zu haben
 function addDefaultData() {
-    getAdressFromCoords("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
-    getAdressFromCoords("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
-    getAdressFromCoords("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
+    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
+    fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
+    fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
 }
 
 //Generiert 3 stanrard Eintraege
@@ -199,7 +199,7 @@ function handleNoGeolocation(errorFlag) {
 }
 
 //Methode, um Eintraege in eintragObjArray hinzuzufuegen und div. andere Methoden auszufuehren
-/*function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
     var adr = getAdressFromCoords(inLng, inLat);
     var newEintrag = {
         id: idObjArray,
@@ -218,10 +218,10 @@ function handleNoGeolocation(errorFlag) {
     addMarkerToMap();
     localStorage.setItem(newEintrag.id, newEintrag.name);
 
-}*/
+}
 
 //Hollt die Adresse aus Koordinaten
-/*function getAdressFromCoords(inLng, inLat) {
+function getAdressFromCoords(inLng, inLat) {
     var lat = parseFloat(inLat);
     var lng = parseFloat(inLng);
     var latlng = new google.maps.LatLng(lat, lng);
@@ -241,7 +241,7 @@ function handleNoGeolocation(errorFlag) {
             alert('Geocoder failed due to: ' + status);
         }
     });
-}*/
+}
 
 /*function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
     var adr = getAdressFromCoords(inLng, inLat);
@@ -251,22 +251,21 @@ function handleNoGeolocation(errorFlag) {
 
 
 
-$.when($.ajax("/page1.php"), $.ajax("/page2.php")).done(function (a1, a2) {
+/*$.when($.ajax("/page1.php"), $.ajax("/page2.php")).done(function (a1, a2) {
     // a1 and a2 are arguments resolved for the page1 and page2 ajax requests, respectively.
     // Each argument is an array with the following structure: [ data, statusText, jqXHR ]
     var data = a1[0] + a2[0]; // a1[ 0 ] = "Whip", a2[ 0 ] = " It"
     if (/Whip It/.test(data)) {
         alert("We got what we came for!");
     }
-});
+});*/
 
-
-function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+/*function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
     var lat = parseFloat(inLat);
     var lng = parseFloat(inLng);
     var latlng = new google.maps.LatLng(lat, lng);
     var geocoder = new google.maps.Geocoder();
-    setTimeout(null, 2000)
+    setTimeout(null, 5000)
     geocoder.geocode({
         'latLng': latlng
     }, function (results, status) {
@@ -295,7 +294,7 @@ function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
             alert('Geocoder failed due to: ' + status);
         }
     });
-}
+}*/
 
 
 //Fuegt Marker zur Uebersichts-Karte hinzu 
