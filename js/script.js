@@ -1,56 +1,47 @@
+//Hier werden Objekte in einem Array gespeichert, um anschliessend mit denen zu arbeiten
 var eintragObjArray = [];
+//Hier werden Marker in einem Array gespeichert, um anschliessend mit denen zu arbeiten
 var markerArray = [];
+//Objekt mit "Ja" & "Nein" Wert, um Wartung zu erleichtern
 var jaNeinObj = {
     ja: "Ja",
     nein: "Nein"
 };
+//Id von jedem Objekt in eintragObjArray
 var idObjArray = 0;
+//Id von jedem Objekt in markerArray
 var idMarkerArray = 0;
+//Speichert, ob die Seite schon mal geladen wurde
 var loadedOnce = false;
-var map, detailMap, google, placeSearch, autocomplete, idToDelete, markerIdToDelete, currentLocation;
-var directionsDisplay;
-var componentForm = {
+//Ganz viele globale Variablen
+var map, detailMap, google, placeSearch, autocomplete, idToDelete, markerIdToDelete, currentLocation, directionsDisplay;
+/*var componentForm = {
     street_number: 'short_name',
     route: 'long_name',
     locality: 'long_name',
     administrative_area_level_1: 'short_name',
     country: 'long_name',
     postal_code: 'short_name'
-};
+};*/
 
+//Wenn das Dokument fertig ist, alles initialisieren 
 $(document).ready(function () {
     addDefaultData();
     fillListWithData();
     google.maps.event.addDomListener(window, 'load', initialize);
     $("#save").click(addNewItemToList);
-    /*$('#save').bind('click', function () {
-    var txtVal = $('#txtDate').val();
-    if (isDate(txtVal)) {
-        alert('Valid Date');
-    } else {
-        alert('Invalid Date');
-    }
-});*/
-
     $("#deleteItem").click(deleteItem);
-
-    /*
-        $(document).on("pageshow", "#eintragDetail", function () {
-            currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        });*/
 
     $(document).on("pageshow", "#eintragDetail", function () {
         google.maps.event.trigger(detailMap, 'resize');
     });
 
-
     $(document).on("pageshow", "#home", function () {
         google.maps.event.trigger(map, 'resize');
     });
-
-    /*$("#home").on("pageshow", )*/
 });
 
+//Initial Methode, um WebApp mit Werten zu fuellen und diverse globale Variablen bzw. Services zu initialisieren
 function initialize() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -101,13 +92,16 @@ function initialize() {
     var GeoMarker = new GeolocationMarker(map);
 }
 
+//Daten aus eintragObjArray verwendet, um erste eintraege zu haben
 function addDefaultData() {
-    fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
-    fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
-    fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
+    getAdressFromCoords("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
+    getAdressFromCoords("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
+    getAdressFromCoords("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
 }
 
+//Generiert 3 stanrard Eintraege
 function fillListWithData() {
+    alert("filled");
     $("#eintraegeList").empty();
     eintragObjArray.forEach(function (currObj) {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
@@ -118,6 +112,7 @@ function fillListWithData() {
 
 }
 
+//Fuellt Detail Seite mit Werten vom selektierten Objekt aus eintragObjArray
 function fillDetailPage() {
     var selectedObjectsId = $(this).attr("id");
     var index = -1;
@@ -185,6 +180,7 @@ function fillDetailPage() {
     });
 }
 
+//Meldung an User fals ein Fehler bei Positinosermittlung entsteht
 function handleNoGeolocation(errorFlag) {
     var content;
     if (errorFlag) {
@@ -202,7 +198,8 @@ function handleNoGeolocation(errorFlag) {
     map.setCenter(options.position);
 }
 
-function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+//Methode, um Eintraege in eintragObjArray hinzuzufuegen und div. andere Methoden auszufuehren
+/*function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
     var adr = getAdressFromCoords(inLng, inLat);
     var newEintrag = {
         id: idObjArray,
@@ -221,9 +218,10 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
     addMarkerToMap();
     localStorage.setItem(newEintrag.id, newEintrag.name);
 
-}
+}*/
 
-function getAdressFromCoords(inLng, inLat) {
+//Hollt die Adresse aus Koordinaten
+/*function getAdressFromCoords(inLng, inLat) {
     var lat = parseFloat(inLat);
     var lng = parseFloat(inLng);
     var latlng = new google.maps.LatLng(lat, lng);
@@ -243,8 +241,64 @@ function getAdressFromCoords(inLng, inLat) {
             alert('Geocoder failed due to: ' + status);
         }
     });
+}*/
+
+/*function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+    var adr = getAdressFromCoords(inLng, inLat);
+
+
+}*/
+
+
+
+$.when($.ajax("/page1.php"), $.ajax("/page2.php")).done(function (a1, a2) {
+    // a1 and a2 are arguments resolved for the page1 and page2 ajax requests, respectively.
+    // Each argument is an array with the following structure: [ data, statusText, jqXHR ]
+    var data = a1[0] + a2[0]; // a1[ 0 ] = "Whip", a2[ 0 ] = " It"
+    if (/Whip It/.test(data)) {
+        alert("We got what we came for!");
+    }
+});
+
+
+function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+    var lat = parseFloat(inLat);
+    var lng = parseFloat(inLng);
+    var latlng = new google.maps.LatLng(lat, lng);
+    var geocoder = new google.maps.Geocoder();
+    setTimeout(null, 2000)
+    geocoder.geocode({
+        'latLng': latlng
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+                var newEintrag = {
+                    id: idObjArray,
+                    name: inName,
+                    preis: inPreis,
+                    lng: inLng,
+                    lat: inLat,
+                    adresse: results[1].formatted_address,
+                    geschaeft: inGeschaeft,
+                    date: inDate,
+                    isWichtig: inIsWichtig,
+                    isDone: inIsDone
+                };
+                idObjArray += 1;
+                eintragObjArray.push(newEintrag);
+                addMarkerToMap();
+                localStorage.setItem(newEintrag.id, newEintrag.name);
+            } else {
+                alert('No results found');
+            }
+        } else {
+            alert('Geocoder failed due to: ' + status);
+        }
+    });
 }
 
+
+//Fuegt Marker zur Uebersichts-Karte hinzu 
 function addMarkerToMap() {
     if (!loadedOnce) {
         //alert("add");
@@ -271,6 +325,7 @@ function addMarkerToMap() {
 
 }
 
+//Sucht die aktuelle Position des Client
 function geolocate() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -285,7 +340,9 @@ function geolocate() {
     }
 }
 
+//Neues Objekt zur Liste hinzufuegen + Validation
 function addNewItemToList() {
+    var errorMessage = "";
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address': $("#autocomplete").val()
@@ -306,36 +363,45 @@ function addNewItemToList() {
                 var inIsDone = false;
                 if (inName == '') {
                     isValid = false;
+                    errorMessage += "Namen eingeben";
                 }
 
                 if (!$.isNumeric(inPreis)) {
                     isValid = false;
+                    errorMessage += "Nummerischen eingeben";
                 }
 
                 if (inGeschaeft == '') {
                     isValid = false;
+                    errorMessage += "Geschaeft eingeben";
                 }
 
                 if (isValid) {
-                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, isDringlich, inIsDone);
+                    getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, isDringlich, inIsDone);
                     fillListWithData();
                     $(':mobile-pagecontainer').pagecontainer('change', '#home', {
                         transition: 'flip',
                         reverse: true,
                         showLoadMsg: true
                     });
+                    $(':input').val('');
+
                 } else {
-                    alert("Bitte eingabe überprüfen!");
+                    $('#fehlerMeldungen').text(errorMessage);
+                    alert("Bitte eingabe überprüfen! 1");
                 }
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         } else {
-            alert("Bitte eingabe überprüfen!");
+            $('#fehlerMeldungen').text(errorMessage);
+
+            alert("Bitte eingabe überprüfen! 2");
         }
     });
 }
 
+//Ein Element von eintragObjArray entfernen und Abhaengigkeiten anpassen
 function deleteItem() {
     eintragObjArray.splice(idToDelete, 1);
     alert(markerArray[markerIdToDelete].id);
@@ -345,6 +411,7 @@ function deleteItem() {
 
 }
 
+//Detail Map initialisieren und Laufroute zeichnen
 function drawDetailMap(inLat, inLng) {
     var lat = parseFloat(inLat);
     var lng = parseFloat(inLng);
@@ -352,14 +419,11 @@ function drawDetailMap(inLat, inLng) {
     var canvas = document.getElementById('detailMap');
     var mapOptions = {
         zoom: 16,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-            //,center: latlng
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: latlng,
+        zoom: 16
     };
-    /*    var detailMarker = new google.maps.Marker({
-            position: latlng,
-            map: detailMap
-        });*/
-    /*    alert(latlng);*/
+
 
     detailMap = new google.maps.Map(canvas, mapOptions);
 
@@ -377,12 +441,9 @@ function drawDetailMap(inLat, inLng) {
         }
     });
     directionsDisplay.setMap(detailMap);
-    detailMap.setCenter(latlng);
-    detailMap.setZoom(16);
-    //resizeDetailMap();
 }
 
-//Find and remove the marker from the Array
+//Bestimmten Marker von der Karte entfernen
 function deleteMarker(id) {
     for (var i = 0; i < markerArray.length; i++) {
         if (markerArray[i].id == id) {
