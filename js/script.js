@@ -101,7 +101,6 @@ function addDefaultData() {
 
 //Generiert 3 stanrard Eintraege
 function fillListWithData() {
-    alert("filled");
     $("#eintraegeList").empty();
     eintragObjArray.forEach(function (currObj) {
         $("#eintraegeList").append("<li id = " + currObj.id + "><a href = '#'>" + currObj.name + "</a></li>");
@@ -200,7 +199,9 @@ function handleNoGeolocation(errorFlag) {
 
 //Methode, um Eintraege in eintragObjArray hinzuzufuegen und div. andere Methoden auszufuehren
 function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
-    var adr = getAdressFromCoords(inLng, inLat);
+    var lat = parseFloat(inLat);
+    var lng = parseFloat(inLng);
+    var adr = getAdressFromCoords(lat, lng);
     var newEintrag = {
         id: idObjArray,
         name: inName,
@@ -221,10 +222,8 @@ function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate,
 }
 
 //Hollt die Adresse aus Koordinaten
-function getAdressFromCoords(inLng, inLat) {
-    var lat = parseFloat(inLat);
-    var lng = parseFloat(inLng);
-    var latlng = new google.maps.LatLng(lat, lng);
+function getAdressFromCoords(inLat, inLng) {
+    var latlng = new google.maps.LatLng(inLat, inLng);
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'latLng': latlng
@@ -236,20 +235,15 @@ function getAdressFromCoords(inLng, inLat) {
                 return results[1].formatted_address;
             } else {
                 alert('No results found');
+
             }
         } else {
             alert('Geocoder failed due to: ' + status);
         }
+
     });
+
 }
-
-/*function fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
-    var adr = getAdressFromCoords(inLng, inLat);
-
-
-}*/
-
-
 
 /*$.when($.ajax("/page1.php"), $.ajax("/page2.php")).done(function (a1, a2) {
     // a1 and a2 are arguments resolved for the page1 and page2 ajax requests, respectively.
@@ -260,7 +254,7 @@ function getAdressFromCoords(inLng, inLat) {
     }
 });*/
 
-/*function getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
+/*function adressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, inIsWichtig, inIsDone) {
     var lat = parseFloat(inLat);
     var lng = parseFloat(inLng);
     var latlng = new google.maps.LatLng(lat, lng);
@@ -351,6 +345,7 @@ function addNewItemToList() {
                 var isValid = true;
                 var inName = $("#name").val();
                 var inPreis = $("#preis").val();
+                /*alert(results[0].geometry.location.lat());*/
                 var inLat = results[0].geometry.location.lat();
                 var inLng = results[0].geometry.location.lng();
                 var inGeschaeft = $("#geschaeft").val();
@@ -376,7 +371,7 @@ function addNewItemToList() {
                 }
 
                 if (isValid) {
-                    getAdressFromCoords(inName, inPreis, inLat, inLng, inGeschaeft, inDate, isDringlich, inIsDone);
+                    fillEintragObjArray(inName, inPreis, inLat, inLng, inGeschaeft, inDate, isDringlich, inIsDone);
                     fillListWithData();
                     $(':mobile-pagecontainer').pagecontainer('change', '#home', {
                         transition: 'flip',
