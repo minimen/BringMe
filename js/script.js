@@ -90,6 +90,8 @@ function addDefaultData() {
     fillEintragObjArray("Bananen", "0.6", "47.38558", "8.53148", "Migros Limmatplatz", "16.06.2015", false, false);
     fillEintragObjArray("Lipton Ice Tea Lemon", "1.5", "47.37670", "8.54212", "Coop Central", "21.06.2015", true, false);
     fillEintragObjArray("Vittel 6x1.5l", "3.95", "47.38558", "8.53148", "Migros Limmatplatz", "20.06.2015", true, false);
+    fillEintragObjArray("Apfel (1kg)", "6", "47.37510", "8.53865", "Globus", "20.06.2015", true, false);
+    fillEintragObjArray("Seife", "4.95", "47.37879", "8.53599", "24h Shop", "20.06.2015", true, false);
 }
 
 //Generiert 3 stanrard Eintraege
